@@ -10,8 +10,17 @@ public class Audio {
     static final String TankDeparture = "C:\\Users\\Asus\\Desktop\\AP final project\\Audio\\Moving tank sound.wav";
     static final String TankShooting = "C:\\Users\\Asus\\Desktop\\AP final project\\Audio\\Tank shooting sound";
 
+    static Tank tank;
 
-    void playMenuMusic() {
+
+
+    public Audio(Tank intendedTank){
+        tank = intendedTank;
+    }
+
+
+
+    static void playMenuMusic() {
 
         try {
             File musicPath = new File(MenuMusicLocation);
@@ -31,7 +40,7 @@ public class Audio {
         }
     }
 
-    void tankExplosion() {
+   static void tankExplosionSound() {
 
         try {
             File musicPath = new File(TankExplosion);
@@ -51,7 +60,7 @@ public class Audio {
         }
     }
 
-    void tankShooting(){
+    static void tankShootingSound(){
 
         try {
             File musicPath = new File(TankShooting);
@@ -71,7 +80,7 @@ public class Audio {
         }
     }
 
-    void tankDeparture(){
+    static void tankDepartureSound(){
 
         try {
             File musicPath = new File(TankDeparture);
@@ -89,5 +98,17 @@ public class Audio {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    static void tankDeparture(){
+        while (tank.isKeyDOWN() || tank.isKeyLEFT() || tank.isKeyRIGHT() || tank.isKeyUP()){
+            tankDepartureSound();
+        }
+    }
+
+    static void tankShooting(){
+    }
+
+    static void tankExplosion() {
     }
 }
