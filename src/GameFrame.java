@@ -21,9 +21,9 @@ import javax.swing.JFrame;
  */
 public class GameFrame extends JFrame {
 
-    public static final int ScorePanel_WIDTH = 120;
+    public static final int ScorePanel_WIDTH = 360;
     public static final int GAME_HEIGHT = 720;                  // 720p game resolution
-    public static final int GAME_WIDTH = 16 * GAME_HEIGHT / 9 + ScorePanel_WIDTH;  // wide aspect ratio
+    public static final int GAME_WIDTH = 16 * GAME_HEIGHT / 9;  // wide aspect ratio
 
     //uncomment all /*...*/ in the class for using Tank icon instead of a simple circle
     private BufferedImage image;
@@ -37,7 +37,7 @@ public class GameFrame extends JFrame {
     public GameFrame(String title) {
         super(title);
         setResizable(false);
-        setSize(GAME_WIDTH, GAME_HEIGHT);
+        setSize(GAME_WIDTH + ScorePanel_WIDTH, GAME_HEIGHT);
         lastRender = -1;
         fpsHistory = new ArrayList<>(100);
 
@@ -98,17 +98,17 @@ public class GameFrame extends JFrame {
     private void doRendering(Graphics2D g2d, GameState state) {
         // Draw background
         g2d.setColor(Color.GRAY);
-        g2d.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+        g2d.fillRect(0, 0, GAME_WIDTH , GAME_HEIGHT);
         // Draw score panel.
         g2d.setColor(Color.RED);
-        g2d.fillRect(GAME_WIDTH - ScorePanel_WIDTH, 0 ,ScorePanel_WIDTH , GAME_HEIGHT);
+        g2d.fillRect(GAME_WIDTH , 0 ,ScorePanel_WIDTH , GAME_HEIGHT);
 
 
-        AffineTransform trans = AffineTransform.getTranslateInstance(state.locX,state.locY);
-        trans.rotate( Math.toRadians(state.angle) );
+        AffineTransform trans = AffineTransform.getTranslateInstance(state.tankX,state.tankY);
+        trans.rotate( Math.toRadians(state.tankAngle) );
 
         //g2d.drawImage(image,state.locX,state.locY,null);
-        g2d.drawImage(image,state.locX,state.locY,null);
+        g2d.drawImage(image , state.tankX , state.tankY , null);
 
 
 

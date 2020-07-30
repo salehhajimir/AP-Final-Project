@@ -1,46 +1,49 @@
-/*** In The Name of Allah ***/
-package game.sample.ball;
+import com.sun.xml.internal.bind.v2.TODO;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Timer;
 import java.util.TimerTask;
 
 /**
  * This class holds the state of game and all of its elements.
  * This class also handles user inputs, which affect the game state.
- *
- * @author Seyed Mohammad Ghaffarian
  */
 public class GameState {
 
-    public double tankX, tankY, diam ,bulletX , bulletY;
-    public boolean gameOver;
+    public int tankX, tankY, diam ,bulletX , bulletY;
+    public double tankAngle , bulletAngle;
 
-    //extra
-    public int angle;
-    public int bulletAngle;
-    private boolean keyA , keyD;
-    //
-    private boolean keyUP, keyDOWN, keyRIGHT, keyLEFT , keySPACE ;
-    public boolean shot , shot1;
+    private boolean keyUP, keyDOWN, keyRIGHT, keyLEFT , keySPACE1 , keySPACE2 , keyA , keyD;
+    public boolean shot1 , shot2 , gameOver;
     private KeyHandler keyHandler;
 
+    private Tank tank;
+    private Bullet bullet;
 
 
 
 
-    public GameState() {
-        Random random = new Random();
-        tankX = random.nextInt(GameFrame.GAME_WIDTH);
-        tankY = random.nextInt(GameFrame.GAME_HEIGHT);
-        //extra
+    public GameState(Tank gameTank , Bullet gameBullet) {
+
+        tank = gameTank;
+        bullet = gameBullet;
+
+        //dar methode update bayad mokhtasate tank (tankX va tankY) ra dar class hayeshan vared konam.
+        tankX = tank.getDimensionX();
+        tankY = tank.getDimensionY();
+
+
         bulletX = tankX;
         bulletY = tankY;
-        keySPACE = false;
-        shot = false;
+
+
+        keySPACE1 = false;
+        keySPACE2 = false;
         shot1 = false;
+        shot2 = false;
         //
         diam = 32;
         gameOver = false;
@@ -52,8 +55,8 @@ public class GameState {
         //extra
         keyA = false;
         keyD = false;
-        angle = 0;
-        bulletAngle = angle;
+        tankAngle = 0;
+        bulletAngle = tankAngle;
         //
         keyHandler = new KeyHandler();
     }
@@ -77,10 +80,10 @@ public class GameState {
             tankX += 8;
 
         if (keyA)
-            angle-= 4;
+            tankAngle-= 4;
 
         if (keyD)
-            angle+= 4;
+            tankAngle+= 4;
 
         tankX = Math.max(tankX, 30);
         tankX = Math.min(tankX, GameFrame.GAME_WIDTH - 30);
@@ -90,18 +93,35 @@ public class GameState {
 
 
         // update bullets' states.
-        if (!keySPACE){
+        if (!keySPACE1){
             bulletX = tankX + 16;
             bulletY = tankY + 16;
-            bulletAngle = angle;
+            bulletAngle = tankAngle;
         }
-        if (keySPACE){
-            shot = true;
+        if (keySPACE1){
+            shot1 = true;
+            Bullet bullet1 = new Bullet();
             bulletAngle += 0;
             bulletX += 16 * Math.cos(Math.abs(Math.toRadians(bulletAngle)));
             bulletY += 16 * Math.sin(Math.toRadians(bulletAngle));
         }
-        //
+        if (keySPACE2 && shot1){
+            Bullet bullet2 = new Bullet();
+            shot2 = true;
+        }
+
+
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+               shot1 = false;
+               shot2 = false;
+            }
+        } , 1000 - System.currentTimeMillis());
+
+
+
     }
 
 
@@ -145,11 +165,11 @@ public class GameState {
                     keyD = true;
                     break;
                 case KeyEvent.VK_SPACE: {
-                    keySPACE = true;
+                    keySPACE1 = true;
                     System.out.println("bullet" + bulletX + "-----" + bulletY);
                     System.out.println("tank" + tankX + "--------" + tankY);
                     System.out.println("angle" + bulletAngle);
-                    System.out.println(keySPACE);
+                    System.out.println(keySPACE1);
                     //
                 }
             }
