@@ -17,13 +17,9 @@ public class Data {
     }
 
     public static void removeWall(){
-        return;
-        /*
         for (Wall wall : walls){
             if (!wall.isAlive())
                 walls.remove(wall);
         }
-
-         */
     }
 }

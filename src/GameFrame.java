@@ -105,9 +105,8 @@ public class GameFrame extends JFrame {
 
         //drawing walls
         for (Wall wall : Data.walls){
-            //if (wall.isAlive())
+            if (wall.isAlive())
                 wall.renderWall(g2d);
-                //System.out.println(wall.getDimensionX() + "____" + wall.getDimensionY());
         }
 
 
@@ -119,6 +118,7 @@ public class GameFrame extends JFrame {
 
         //drawing bullets
         for (Bullet bullet : Data.bullets){
+            System.out.println(Data.bullets);
             if (bullet.isAlive())
                 bullet.renderBullet(g2d);
         }

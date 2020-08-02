@@ -1,5 +1,6 @@
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -51,6 +52,8 @@ public class Wall {
         width = Map.WIDTH_CONSTANT;
         height = Map.HEIGHT_CONSTANT;
 
+        alive = true;
+
         centerX = dimensionX + (width / 2);
         centerY = dimensionY + (height / 2);
 
@@ -70,9 +73,17 @@ public class Wall {
     }
 
     public void renderWall(Graphics2D graphics2D){
-        //graphics2D.drawImage(destructiveWall , dimensionX , dimensionY , null);
-        System.out.println(1);
-        graphics2D.drawRect(dimensionX , dimensionY , width , height);
+        AffineTransform trans = AffineTransform.getTranslateInstance(dimensionX, dimensionY);
+        BufferedImage image;
+        if (destructive) {
+            image = destructiveWall;
+        }
+        else{
+            image = reflectorWall;
+        }
+        trans.scale(width / 28 , height/28);
+        graphics2D.drawImage(image , trans , null);
+        //graphics2D.drawRect(dimensionX , dimensionY , width , height);
     }
 
     public boolean checkOverlap(int x , int y){

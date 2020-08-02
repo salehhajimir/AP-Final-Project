@@ -15,8 +15,8 @@ public class Tank {
 
 
 
-    private int dimensionX, dimensionY, angle, health, extraHealth , side , maxHealth;
-    private boolean shot1 , shot2;
+    private int dimensionX, dimensionY, angle, health, extraHealth , maxHealth;
+    private boolean shot1 , shot2 , alive;
 
 
 
@@ -26,13 +26,16 @@ public class Tank {
 
     private String[] image = new String[8];
 
+    private final int SIDE = 60;
+    private final int TANK_WIDTH = 42;
+    private final int TANK_LENGTH = 46;
 
     public Tank() {
         summonTank();
 
-        side = 16;
+
         extraHealth = 0;
-        //health = ;
+        alive = true;
 
         shot1 = false;
         shot2 = false;
@@ -42,13 +45,15 @@ public class Tank {
         image[2] = "C:\\Users\\Asus\\Desktop\\AP final project\\images\\tank and bullet\\tank_green.png";
         image[3] = "C:\\Users\\Asus\\Desktop\\AP final project\\images\\tank and bullet\\tank_sand.png";
         image[4] = "C:\\Users\\Asus\\Desktop\\AP final project\\images\\tank and bullet\\tank_red.png";
-        image[5] = "C:\\Users\\Asus\\Desktop\\AP final project\\images\\tank and bullet\\tank_huge.png";
+        image[5] = "C:\\Users\\Asus\\Desktop\\AP final project\\images\\tank and bullet\\tank_bigRed.png";
         image[6] = "C:\\Users\\Asus\\Desktop\\AP final project\\images\\tank and bullet\\tank_darkLarge.png";
-        image[7] = "C:\\Users\\Asus\\Desktop\\AP final project\\images\\tank and bullet\\tank_bigRed.png";
+        image[7] = "C:\\Users\\Asus\\Desktop\\AP final project\\images\\tank and bullet\\tank_huge.png";
 
 
+        Random random = new Random();
+        int rand = random.nextInt(6);
         try{
-            tankImage = ImageIO.read(new File(image[0]));
+            tankImage = ImageIO.read(new File(image[rand]));
         }
         catch(IOException e){
             System.out.println(e);
@@ -101,13 +106,13 @@ public class Tank {
         return angle;
     }
 
+    public boolean isAlive() {
+        return alive;
+    }
 
-
-
-
-
-    public boolean isAlive(){
-        return (health + extraHealth > 0);
+    public void destruction(){
+        if(health + extraHealth <= 0)
+            alive = false;
     }
 
 
@@ -246,15 +251,16 @@ public class Tank {
     public void renderTank(Graphics2D graphics2D){
         AffineTransform trans = AffineTransform.getTranslateInstance(dimensionX, dimensionY);
         trans.rotate(Math.toRadians(angle));
-
+        trans.translate(-TANK_WIDTH/2 , -TANK_LENGTH/2);
         graphics2D.drawImage(tankImage , trans , null);
+        //graphics2D.drawRect(dimensionX , dimensionY , side , side);
 
     }
 
 
     public boolean checkMove(int tmpX , int tmpY){
         for (Wall wall : Data.walls){
-            if (wall.checkOverlap(tmpX , tmpY))
+            if (wall.checkOverlap(tmpX, tmpY))
                 return false;
         }
         return true;
@@ -263,10 +269,12 @@ public class Tank {
 
     public void summonTank(){
         Random random = new Random();
+        int tmpX;
+        int tmpY;
 
         while (true) {
-            int tmpX = random.nextInt(GameFrame.GAME_WIDTH);
-            int tmpY = random.nextInt(GameFrame.GAME_HEIGHT);
+             tmpX  = random.nextInt(GameFrame.GAME_WIDTH) + SIDE/2;
+             tmpY = random.nextInt(GameFrame.GAME_HEIGHT) - SIDE/2;
             boolean breaking=false;
             for (Wall wall : Data.walls) {
                 if (!(wall.checkOverlap(tmpX,tmpY))) {
@@ -285,8 +293,8 @@ public class Tank {
 
     public void encounter(){
         for (Bullet bullett : Data.bullets){
-            if (this.dimensionX <= bullett.getDimensionX() && bullett.getDimensionX() <= this.dimensionX + side
-            && this.dimensionY <= bullett.getDimensionY() && bullett.getDimensionY() <= this.dimensionY + side){
+            if (this.dimensionX - SIDE/2 <= bullett.getDimensionX() && bullett.getDimensionX() <= this.dimensionX + SIDE/2
+            && this.dimensionY - SIDE/2 <= bullett.getDimensionY() && bullett.getDimensionY() <= this.dimensionY + SIDE/2){
                 this.maxHealth -= bullett.getMaxDamage();
             }
         }
