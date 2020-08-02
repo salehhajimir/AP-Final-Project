@@ -101,10 +101,9 @@ public class Audio {
     }
 
     static void tankDeparture(){
-        while (tank.isKeyDOWN() || tank.isKeyLEFT() || tank.isKeyRIGHT() || tank.isKeyUP()){
-            tankDepartureSound();
+
         }
-    }
+
 
     static void tankShooting(){
     }

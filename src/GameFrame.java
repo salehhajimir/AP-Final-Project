@@ -21,11 +21,10 @@ import javax.swing.JFrame;
  */
 public class GameFrame extends JFrame {
 
-    public static final int ScorePanel_WIDTH = 360;
+    public static final int ScorePanel_WIDTH = 240;
     public static final int GAME_HEIGHT = 720;                  // 720p game resolution
     public static final int GAME_WIDTH = 16 * GAME_HEIGHT / 9;  // wide aspect ratio
 
-    //uncomment all /*...*/ in the class for using Tank icon instead of a simple circle
     private BufferedImage image;
 
 
@@ -97,18 +96,36 @@ public class GameFrame extends JFrame {
      */
     private void doRendering(Graphics2D g2d, GameState state) {
         // Draw background
-        g2d.setColor(Color.GRAY);
+        g2d.setColor(Color.BLACK);
         g2d.fillRect(0, 0, GAME_WIDTH , GAME_HEIGHT);
         // Draw score panel.
-        g2d.setColor(Color.RED);
+        g2d.setColor(Color.GRAY);
         g2d.fillRect(GAME_WIDTH , 0 ,ScorePanel_WIDTH , GAME_HEIGHT);
 
 
-        AffineTransform trans = AffineTransform.getTranslateInstance(state.tankX,state.tankY);
-        trans.rotate( Math.toRadians(state.tankAngle) );
+        //drawing walls
+        for (Wall wall : Data.walls){
+            if (wall.isAlive())
+                //wall.renderWall(g2d);
+            System.out.println(wall.getDimensionX() + "____" + wall.getDimensionY());
+        }
 
-        //g2d.drawImage(image,state.locX,state.locY,null);
-        g2d.drawImage(image , state.tankX , state.tankY , null);
+
+        //drawing tanks
+        for (Tank tank : Data.tanks){
+            if (tank.isAlive())
+                tank.renderTank(g2d);
+        }
+
+        //drawing bullets
+        for (Bullet bullet : Data.bullets){
+            if (bullet.isAlive())
+                bullet.renderBullet(g2d);
+        }
+
+
+
+
 
 
 

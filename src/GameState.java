@@ -1,8 +1,10 @@
 import com.sun.xml.internal.bind.v2.TODO;
 
+import javax.sql.DataSource;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -13,51 +15,40 @@ import java.util.TimerTask;
  */
 public class GameState {
 
-    public int tankX, tankY, diam ,bulletX , bulletY;
-    public double tankAngle , bulletAngle;
 
-    private boolean keyUP, keyDOWN, keyRIGHT, keyLEFT , keySPACE1 , keySPACE2 , keyA , keyD;
-    public boolean shot1 , shot2 , gameOver;
+    private boolean keyUP, keyDOWN, keyRIGHT, keyLEFT, keyA , keyD , keySPACE;
+    public boolean  gameOver;
     private KeyHandler keyHandler;
 
-    private Tank tank;
-    private Bullet bullet;
+    private Tank tank1 , tank2;
 
+    public Tank getTank1() {
+        return tank1;
+    }
 
+    public Tank getTank2() {
+        return tank2;
+    }
 
+    public GameState() {
 
-    public GameState(Tank gameTank , Bullet gameBullet) {
-
-        tank = gameTank;
-        bullet = gameBullet;
-
-        //dar methode update bayad mokhtasate tank (tankX va tankY) ra dar class hayeshan vared konam.
-        tankX = tank.getDimensionX();
-        tankY = tank.getDimensionY();
-
-
-        bulletX = tankX;
-        bulletY = tankY;
-
-
-        keySPACE1 = false;
-        keySPACE2 = false;
-        shot1 = false;
-        shot2 = false;
-        //
-        diam = 32;
         gameOver = false;
-        //
         keyUP = false;
         keyDOWN = false;
         keyRIGHT = false;
         keyLEFT = false;
-        //extra
         keyA = false;
         keyD = false;
-        tankAngle = 0;
-        bulletAngle = tankAngle;
-        //
+
+        tank1 = new Tank();
+        tank2 = new Tank();
+
+        Data.tanks.add(tank1);
+        Data.tanks.add(tank2);
+
+
+
+
         keyHandler = new KeyHandler();
     }
 
@@ -68,61 +59,41 @@ public class GameState {
 
         //update tank states.
         if (keyUP)
-            tankY -= 8;
+            tank1.moveUp();
 
         if (keyDOWN)
-            tankY += 8;
+            tank1.moveDown();
 
         if (keyLEFT)
-            tankX -= 8;
+             tank1.moveLeft();
 
         if (keyRIGHT)
-            tankX += 8;
+            tank1.moveRight();
 
         if (keyA)
-            tankAngle-= 4;
+            tank1.turnAntiClockwise();
 
         if (keyD)
-            tankAngle+= 4;
+           tank1.turnClockwise();
 
-        tankX = Math.max(tankX, 30);
-        tankX = Math.min(tankX, GameFrame.GAME_WIDTH - 30);
-        tankY = Math.max(tankY, 50);
-        tankY = Math.min(tankY, GameFrame.GAME_HEIGHT - 40);
+        tank1.checkBound();
 
 
+        tank2.randomMove();
+        tank2.checkBound();
 
-        // update bullets' states.
-        if (!keySPACE1){
-            bulletX = tankX + 16;
-            bulletY = tankY + 16;
-            bulletAngle = tankAngle;
+        Data.removeBullet();
+        Data.removeWall();
+
+
+
+        if (keySPACE){
+            tank1.fire();
         }
-        if (keySPACE1){
-            shot1 = true;
-            Bullet bullet1 = new Bullet();
-            bulletAngle += 0;
-            bulletX += 16 * Math.cos(Math.abs(Math.toRadians(bulletAngle)));
-            bulletY += 16 * Math.sin(Math.toRadians(bulletAngle));
-        }
-        if (keySPACE2 && shot1){
-            Bullet bullet2 = new Bullet();
-            shot2 = true;
-        }
-
-
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-               shot1 = false;
-               shot2 = false;
-            }
-        } , 1000 - System.currentTimeMillis());
-
-
 
     }
+
+
 
 
     public KeyListener getKeyListener() {
@@ -165,12 +136,7 @@ public class GameState {
                     keyD = true;
                     break;
                 case KeyEvent.VK_SPACE: {
-                    keySPACE1 = true;
-                    System.out.println("bullet" + bulletX + "-----" + bulletY);
-                    System.out.println("tank" + tankX + "--------" + tankY);
-                    System.out.println("angle" + bulletAngle);
-                    System.out.println(keySPACE1);
-                    //
+                    keySPACE = true;
                 }
             }
         }
