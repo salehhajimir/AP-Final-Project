@@ -51,8 +51,9 @@ public class Wall {
         width = Map.WIDTH_CONSTANT;
         height = Map.HEIGHT_CONSTANT;
 
-        centerX = dimensionX + width / 2;
-        centerY = dimensionY + height / 2;
+        centerX = dimensionX + (width / 2);
+        centerY = dimensionY + (height / 2);
+
 
         try{
             destructiveWall = ImageIO.read(new File(WALL + "crateWood.png"));
@@ -69,7 +70,9 @@ public class Wall {
     }
 
     public void renderWall(Graphics2D graphics2D){
-        graphics2D.drawImage(destructiveWall , dimensionX , dimensionY , null);
+        //graphics2D.drawImage(destructiveWall , dimensionX , dimensionY , null);
+        System.out.println(1);
+        graphics2D.drawRect(dimensionX , dimensionY , width , height);
     }
 
     public boolean checkOverlap(int x , int y){

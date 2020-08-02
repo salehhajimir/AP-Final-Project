@@ -105,9 +105,9 @@ public class GameFrame extends JFrame {
 
         //drawing walls
         for (Wall wall : Data.walls){
-            if (wall.isAlive())
-                //wall.renderWall(g2d);
-            System.out.println(wall.getDimensionX() + "____" + wall.getDimensionY());
+            //if (wall.isAlive())
+                wall.renderWall(g2d);
+                //System.out.println(wall.getDimensionX() + "____" + wall.getDimensionY());
         }
 
 

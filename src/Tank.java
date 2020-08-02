@@ -263,13 +263,10 @@ public class Tank {
 
     public void summonTank(){
         Random random = new Random();
-        //checking if its an empty area.
-        int tmpX = random.nextInt(GameFrame.GAME_WIDTH);
-        int tmpY = random.nextInt(GameFrame.GAME_HEIGHT);
 
         while (true) {
-            tmpX = random.nextInt(GameFrame.GAME_WIDTH);
-            tmpY = random.nextInt(GameFrame.GAME_HEIGHT);
+            int tmpX = random.nextInt(GameFrame.GAME_WIDTH);
+            int tmpY = random.nextInt(GameFrame.GAME_HEIGHT);
             boolean breaking=false;
             for (Wall wall : Data.walls) {
                 if (!(wall.checkOverlap(tmpX,tmpY))) {
@@ -280,7 +277,8 @@ public class Tank {
                 }
 
             }
-            if(breaking)break;
+            if(breaking)
+                break;
         }
     }
 
