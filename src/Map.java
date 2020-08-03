@@ -7,6 +7,7 @@ public class Map {
     private int sizeY;
     private int[][] map;
     private Wall[][] walls;
+    private FloorBlock[][] floor;
     public static int WIDTH_CONSTANT, HEIGHT_CONSTANT;
 
     public Map() {
@@ -18,14 +19,21 @@ public class Map {
         HEIGHT_CONSTANT = GameFrame.GAME_HEIGHT / sizeY;
 
         walls = new Wall[sizeY][sizeX];
+        floor = new FloorBlock[sizeY][sizeX];
+
 
 
         for (int j = 0; j < sizeX; j++) {
             for (int i = 0; i < sizeY; i++) {
                 switch (map[j][i]) {
 
-                    case 0:
+                    case 0: {
+                        floor[j][i] = new FloorBlock();
+                        floor[j][i].setDimensionX(j * WIDTH_CONSTANT);
+                        floor[j][i].setDimensionY(i * HEIGHT_CONSTANT);
+                        Data.floor.add(floor[j][i]);
                         break;
+                    }
                     case 1 : {
                         walls[j][i] = new Wall();
                         walls[j][i].setDestructive(false);

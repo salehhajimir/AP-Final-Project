@@ -81,13 +81,12 @@ public class Wall {
         else{
             image = reflectorWall;
         }
-        trans.scale(width / 28 , height/28);
+        trans.scale(width  / 28 , height /28);
         graphics2D.drawImage(image , trans , null);
-        //graphics2D.drawRect(dimensionX , dimensionY , width , height);
     }
 
     public boolean checkOverlap(int x , int y){
-        if (x > dimensionX && x < dimensionX + width && y > dimensionY && y < dimensionY + height)
+        if (x > dimensionX - 8 && x < dimensionX + width + 8 && y > dimensionY -8 && y < dimensionY + height + 8)
             return true;
         return false;
     }

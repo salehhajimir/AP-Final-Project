@@ -34,6 +34,7 @@ public class Tank {
         summonTank();
 
 
+        health = 100;
         extraHealth = 0;
         alive = true;
 
@@ -210,7 +211,7 @@ public class Tank {
     }
 
 
-    public void randomMove(){
+    public void randomMove() {
         Random random = new Random();
         int rand1 = random.nextInt(4);
 
@@ -219,10 +220,10 @@ public class Tank {
                 moveUp();
                 break;
             case 1 :
-                moveRight();
+                moveDown();
                 break;
             case 2 :
-                moveDown();
+                moveRight();
                 break;
             case 3 :
                 moveLeft();
@@ -230,22 +231,22 @@ public class Tank {
         }
 
         int rand2 = random.nextInt(2);
-
         switch (rand2){
-            case 1 :
+            case 0 :
                 turnClockwise();
                 break;
-            case 2 :
+            case 1 :
                 turnAntiClockwise();
                 break;
         }
+
     }
 
     public void checkBound() {
-        this.setDimensionX(Math.max(this.getDimensionX(), 30));
-        this.setDimensionX(Math.min(this.getDimensionX(), GameFrame.GAME_WIDTH - 30));
-        this.setDimensionY(Math.max(this.getDimensionY(), 50));
-        this.setDimensionY(Math.min(this.getDimensionY(), GameFrame.GAME_HEIGHT - 40));
+        this.setDimensionX(Math.max(this.getDimensionX(), Map.WIDTH_CONSTANT));
+        this.setDimensionX(Math.min(this.getDimensionX(), GameFrame.GAME_WIDTH - Map.WIDTH_CONSTANT));
+        this.setDimensionY(Math.max(this.getDimensionY(), Map.HEIGHT_CONSTANT));
+        this.setDimensionY(Math.min(this.getDimensionY(), GameFrame.GAME_HEIGHT - Map.HEIGHT_CONSTANT));
     }
 
     public void renderTank(Graphics2D graphics2D){
@@ -273,11 +274,11 @@ public class Tank {
         int tmpY;
 
         while (true) {
-             tmpX  = random.nextInt(GameFrame.GAME_WIDTH) + SIDE/2;
-             tmpY = random.nextInt(GameFrame.GAME_HEIGHT) - SIDE/2;
+             tmpX  = random.nextInt(GameFrame.GAME_WIDTH);
+             tmpY = random.nextInt(GameFrame.GAME_HEIGHT);
             boolean breaking=false;
-            for (Wall wall : Data.walls) {
-                if (!(wall.checkOverlap(tmpX,tmpY))) {
+            for (FloorBlock floorBlock : Data.floor) {
+                if ((floorBlock.checkOverlap(tmpX,tmpY))) {
                     this.dimensionX = tmpX;
                     this.dimensionY = tmpY;
                     breaking=true;

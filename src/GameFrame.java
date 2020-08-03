@@ -1,7 +1,4 @@
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
@@ -24,8 +21,10 @@ public class GameFrame extends JFrame {
     public static final int ScorePanel_WIDTH = 240;
     public static final int GAME_HEIGHT = 720;                  // 720p game resolution
     public static final int GAME_WIDTH = 16 * GAME_HEIGHT / 9;  // wide aspect ratio
+    private final String BACKGROUND = "C:\\Users\\Asus\\Desktop\\AP final project\\images\\backGround.png";
+    private BufferedImage bufferedImage;
+    private Paint paint;
 
-    private BufferedImage image;
 
 
     private long lastRender;
@@ -41,7 +40,7 @@ public class GameFrame extends JFrame {
         fpsHistory = new ArrayList<>(100);
 
         try{
-            image = ImageIO.read(new File("tank_blue.png"));
+            bufferedImage = ImageIO.read(new File(BACKGROUND));
         }
         catch(IOException e){
             System.out.println(e);
@@ -96,18 +95,18 @@ public class GameFrame extends JFrame {
      */
     private void doRendering(Graphics2D g2d, GameState state) {
         // Draw background
-        g2d.setColor(Color.BLACK);
-        g2d.fillRect(0, 0, GAME_WIDTH , GAME_HEIGHT);
+        g2d.drawImage(bufferedImage , 0 , 0 ,null);
+
         // Draw score panel.
-        g2d.setColor(Color.GRAY);
+        g2d.setColor(Color.RED);
         g2d.fillRect(GAME_WIDTH , 0 ,ScorePanel_WIDTH , GAME_HEIGHT);
 
 
         //drawing walls
         for (Wall wall : Data.walls){
-            if (wall.isAlive())
                 wall.renderWall(g2d);
         }
+
 
 
         //drawing tanks
@@ -118,8 +117,6 @@ public class GameFrame extends JFrame {
 
         //drawing bullets
         for (Bullet bullet : Data.bullets){
-            System.out.println(Data.bullets);
-            if (bullet.isAlive())
                 bullet.renderBullet(g2d);
         }
 
@@ -128,7 +125,7 @@ public class GameFrame extends JFrame {
 
 
 
-
+/*
         // Print FPS info
         long currentRender = System.currentTimeMillis();
         if (lastRender > 0) {
@@ -156,6 +153,8 @@ public class GameFrame extends JFrame {
                 + "Press ESCAPE to end the game.";
         g2d.setFont(g2d.getFont().deriveFont(18.0f));
         g2d.drawString(userGuide, 10, GAME_HEIGHT - 10);
+        */
+
         // Draw GAME OVER
         if (state.gameOver) {
             String str = "GAME OVER";

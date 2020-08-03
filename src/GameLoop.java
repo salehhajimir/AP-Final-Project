@@ -30,6 +30,7 @@ public class GameLoop implements Runnable {
      */
     public void init() {
         state = new GameState();
+        //if ()
         canvas.addKeyListener(state.getKeyListener());
 
     }

@@ -76,11 +76,12 @@ public class GameState {
         if (keyD)
            tank1.turnClockwise();
 
+
         tank1.checkBound();
-
-
         tank2.randomMove();
         tank2.checkBound();
+
+
 
         Data.removeBullet();
         Data.removeWall();
@@ -137,6 +138,7 @@ public class GameState {
                     break;
                 case KeyEvent.VK_SPACE: {
                     keySPACE = true;
+                    break;
                 }
             }
         }
@@ -145,27 +147,27 @@ public class GameState {
         public void keyReleased(KeyEvent e) {
             switch (e.getKeyCode())
             {
-                case KeyEvent.VK_UP:
+                case KeyEvent.VK_UP :
                     keyUP = false;
                     break;
-                case KeyEvent.VK_DOWN:
+                case KeyEvent.VK_DOWN :
                     keyDOWN = false;
                     break;
-                case KeyEvent.VK_LEFT:
+                case KeyEvent.VK_LEFT :
                     keyLEFT = false;
                     break;
-                case KeyEvent.VK_RIGHT:
+                case KeyEvent.VK_RIGHT :
                     keyRIGHT = false;
                     break;
-
-                //extra
-                case KeyEvent.VK_A:
+                case KeyEvent.VK_A :
                     keyA = false;
                     break;
-                case KeyEvent.VK_D:
+                case KeyEvent.VK_D :
                     keyD = false;
                     break;
-                //
+                case KeyEvent.VK_SPACE :
+                    keySPACE = false;
+                    break;
             }
         }
 
