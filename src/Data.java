@@ -13,7 +13,7 @@ public class Data {
 
     public static void removeBullet(){
         for (int i = 0 ; i < bullets.size(); i++){
-            if (bullets.get(i).isAlive()){
+            if (!bullets.get(i).isAlive()){
                 bullets.remove(i);
                 i--;
             }
@@ -24,7 +24,7 @@ public class Data {
 
     public static void removeWall(){
         for (int i = 0 ; i < walls.size(); i++){
-            if (walls.get(i).isAlive()){
+            if (!walls.get(i).isAlive()){
                 walls.remove(i);
                 i--;
             }

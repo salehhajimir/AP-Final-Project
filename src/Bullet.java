@@ -9,11 +9,11 @@ public class Bullet {
 
 
     private boolean alive;
-    private int damage , dimensionX, dimensionY , extraDamage , side , shootingX , shootingY , maxDamage;
+    private int damage, dimensionX, dimensionY, extraDamage, side, shootingX, shootingY, maxDamage;
     private double angle;
     private final double SPEED = 16;
 
-    private final String BULLET = "C:\\Users\\Asus\\Desktop\\AP final project\\images\\tank and bullet\\bulletBlue2_outline.png";
+    private final String BULLET = ".\\images\\tank and bullet\\bulletBlue2_outline.png";
     private BufferedImage bulletImage;
 
 
@@ -21,8 +21,16 @@ public class Bullet {
         this.dimensionX = dimensionX;
     }
 
+    public void setShootingX(int shootingX) {
+        this.shootingX = shootingX;
+    }
+
     public void setDimensionY(int dimensionY) {
         this.dimensionY = dimensionY;
+    }
+
+    public void setShootingY(int shootingY) {
+        this.shootingY = shootingY;
     }
 
     public void setAngle(double angle) {
@@ -57,54 +65,58 @@ public class Bullet {
         return alive;
     }
 
-    public Bullet(){
+    public Bullet() {
         shootingX = getDimensionX();
         shootingY = getDimensionY();
         alive = true;
         extraDamage = 0;
 
-        try{
+        try {
             bulletImage = ImageIO.read(new File(BULLET));
-        }
-        catch(IOException e){
+        } catch (IOException e) {
             System.out.println(e);
         }
 
         Data.bullets.add(this);
     }
 
-    public void move(){
+    public void move() {
         angle += 0;
         dimensionX += SPEED * Math.cos(Math.abs(Math.toRadians(angle)));
         dimensionY += SPEED * Math.sin(Math.toRadians(angle));
+        reflectBullet();
     }
 
-    public void kill(){
+    public void kill() {
         alive = false;
     }
 
-    public void renderBullet(Graphics2D graphics2D){
+    public void renderBullet(Graphics2D graphics2D) {
         AffineTransform trans = AffineTransform.getTranslateInstance(dimensionX, dimensionY);
         trans.rotate(Math.toRadians(angle));
-        graphics2D.drawImage(bulletImage , trans , null);
+        graphics2D.drawImage(bulletImage, trans, null);
 
     }
 
 
-
-
-
-    public void reflectBullet(){
+    public void reflectBullet() {
         double reflectingAngle;
-        for (Wall wall : Data.walls){
-            if (wall.checkOverlap(dimensionX , dimensionY)){
-                reflectingAngle = Math.atan2(dimensionY - shootingY , dimensionX - shootingX);
-                this.setAngle(reflectingAngle);
-            }
+        if (isWallTouched()) {
+            reflectingAngle = Math.atan2(dimensionY - shootingY, dimensionX - shootingX);
+            System.out.println("AANNGGLLEE "+Math.toDegrees(reflectingAngle));
+            this.setAngle(Math.abs(Math.toDegrees(reflectingAngle)) - 180);
         }
+
     }
 
 
+    public boolean isWallTouched() {
+        for (Wall wall : Data.walls) {
+            if (wall.checkOverlap(dimensionX, dimensionY))
+                return true;
+        }
+        return false;
+    }
 
 
 }

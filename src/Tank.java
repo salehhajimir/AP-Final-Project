@@ -18,11 +18,11 @@ public class Tank {
     private int dimensionX, dimensionY, angle, health, extraHealth , maxHealth;
     private boolean shot1 , shot2 , alive;
     private String userName;
+    private final String TANK_IMAGE = ".\\images\\tank and bullet\\";
 
 
 
     public BufferedImage tankImage;
-    private Bullet bullet;
 
 
     private String[] image = new String[8];
@@ -44,14 +44,14 @@ public class Tank {
         shot2 = false;
 
 
-        image[0] = "C:\\Users\\Asus\\Desktop\\AP final project\\images\\tank and bullet\\tank_blue.png";
-        image[1] = "C:\\Users\\Asus\\Desktop\\AP final project\\images\\tank and bullet\\tank_dark.png";
-        image[2] = "C:\\Users\\Asus\\Desktop\\AP final project\\images\\tank and bullet\\tank_green.png";
-        image[3] = "C:\\Users\\Asus\\Desktop\\AP final project\\images\\tank and bullet\\tank_sand.png";
-        image[4] = "C:\\Users\\Asus\\Desktop\\AP final project\\images\\tank and bullet\\tank_red.png";
-        image[5] = "C:\\Users\\Asus\\Desktop\\AP final project\\images\\tank and bullet\\tank_bigRed.png";
-        image[6] = "C:\\Users\\Asus\\Desktop\\AP final project\\images\\tank and bullet\\tank_darkLarge.png";
-        image[7] = "C:\\Users\\Asus\\Desktop\\AP final project\\images\\tank and bullet\\tank_huge.png";
+        image[0] = TANK_IMAGE + "tank_blue.png";
+        image[1] = TANK_IMAGE + "tank_dark.png";
+        image[2] = TANK_IMAGE + "tank_green.png";
+        image[3] = TANK_IMAGE + "tank_sand.png";
+        image[4] = TANK_IMAGE + "tank_red.png";
+        image[5] = TANK_IMAGE + "tank_bigRed.png";
+        image[6] = TANK_IMAGE + "tank_darkLarge.png";
+        image[7] = TANK_IMAGE + "tank_huge.png";
 
 
         Random random = new Random();
@@ -194,20 +194,23 @@ public class Tank {
             public void run() {
                 if(!fireAvalable())
                     return;
-                bullet = new Bullet();
+                Bullet bullet = new Bullet();
+                bullet.setShootingX(dimensionX);
+                bullet.setShootingY(dimensionY);
                 bullet.setDimensionX(dimensionX);
                 bullet.setDimensionY(dimensionY);
                 bullet.setAngle(angle);
                 long time = System.currentTimeMillis();
                 while (bullet.isAlive() && (System.currentTimeMillis() - time) <= 4000){
                     bullet.move();
+
                     try {
                         sleep(100);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
-                if (!(bullet.isAlive() && (System.currentTimeMillis() - time) > 4000))
+                if ((System.currentTimeMillis() - time) > 4000)
                     bullet.kill();
             }
         };

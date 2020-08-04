@@ -21,7 +21,7 @@ public class GameFrame extends JFrame {
     public static final int ScorePanel_WIDTH = 240;
     public static final int GAME_HEIGHT = 720;                  // 720p game resolution
     public static final int GAME_WIDTH = 16 * GAME_HEIGHT / 9;  // wide aspect ratio
-    private final String BACKGROUND = "C:\\Users\\Asus\\Desktop\\AP final project\\images\\backGround.png";
+    private final String BACKGROUND = ".\\images\\backGround.png";
     private BufferedImage bufferedImage;
     private Paint paint;
 
@@ -98,8 +98,8 @@ public class GameFrame extends JFrame {
         g2d.drawImage(bufferedImage , 0 , 0 ,null);
 
         // Draw score panel.
-        g2d.setColor(Color.RED);
-        g2d.fillRect(GAME_WIDTH , 0 ,ScorePanel_WIDTH , GAME_HEIGHT);
+        g2d.setColor(Color.ORANGE);
+        g2d.fillRect(GAME_WIDTH - 5 , 0 ,ScorePanel_WIDTH , GAME_HEIGHT);
 
 
         //drawing walls
@@ -119,8 +119,6 @@ public class GameFrame extends JFrame {
         for (Bullet bullet : Data.bullets){
             if (bullet.isAlive())
                 bullet.renderBullet(g2d);
-            if (!bullet.isAlive())
-                repaint(10 , bullet.getDimensionX() , bullet.getDimensionY() , 6 , 6);
         }
 
 

@@ -78,9 +78,9 @@ public class GameState {
            tank1.turnClockwise();
 
 
-        tank1.checkBound();
+        //tank1.checkBound();
         tank2.randomMove();
-        tank2.checkBound();
+        //tank2.checkBound();
 
 
 
