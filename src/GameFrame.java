@@ -117,7 +117,10 @@ public class GameFrame extends JFrame {
 
         //drawing bullets
         for (Bullet bullet : Data.bullets){
+            if (bullet.isAlive())
                 bullet.renderBullet(g2d);
+            if (!bullet.isAlive())
+                repaint(10 , bullet.getDimensionX() , bullet.getDimensionY() , 6 , 6);
         }
 
 
@@ -125,7 +128,8 @@ public class GameFrame extends JFrame {
 
 
 
-/*
+
+
         // Print FPS info
         long currentRender = System.currentTimeMillis();
         if (lastRender > 0) {
@@ -147,6 +151,10 @@ public class GameFrame extends JFrame {
             g2d.drawString(str, (GAME_WIDTH - strWidth) / 2, strHeight+50);
         }
         lastRender = currentRender;
+
+
+
+        /*
         // Print user guide
         String userGuide
                 = "Use the MOUSE or ARROW KEYS to move the BALL. "
@@ -163,6 +171,7 @@ public class GameFrame extends JFrame {
             int strWidth = g2d.getFontMetrics().stringWidth(str);
             g2d.drawString(str, (GAME_WIDTH - strWidth) / 2, GAME_HEIGHT / 2);
         }
+
     }
 
 }

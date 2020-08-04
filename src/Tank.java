@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
-
+import java.util.Scanner;
 
 
 public class Tank {
@@ -17,6 +17,7 @@ public class Tank {
 
     private int dimensionX, dimensionY, angle, health, extraHealth , maxHealth;
     private boolean shot1 , shot2 , alive;
+    private String userName;
 
 
 
@@ -29,6 +30,7 @@ public class Tank {
     private final int SIDE = 60;
     private final int TANK_WIDTH = 42;
     private final int TANK_LENGTH = 46;
+    private static final int SPEED = 8;
 
     public Tank() {
         summonTank();
@@ -40,6 +42,7 @@ public class Tank {
 
         shot1 = false;
         shot2 = false;
+
 
         image[0] = "C:\\Users\\Asus\\Desktop\\AP final project\\images\\tank and bullet\\tank_blue.png";
         image[1] = "C:\\Users\\Asus\\Desktop\\AP final project\\images\\tank and bullet\\tank_dark.png";
@@ -73,21 +76,36 @@ public class Tank {
         this.health = health;
     }
 
-    public int getExtraHealth() {
-        return extraHealth;
-    }
-
-    public int getHealth() {
-        return health;
-    }
-
-
     public void setDimensionX(int dimensionX) {
         this.dimensionX = dimensionX;
     }
 
     public void setDimensionY(int dimensionY) {
         this.dimensionY = dimensionY;
+    }
+
+    public void setAngle(int angle) {
+        this.angle = angle;
+    }
+
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public int getExtraHealth() {
+        return extraHealth;
+    }
+
+    public int getHealth() {
+        return health;
     }
 
     public int getDimensionX() {
@@ -98,18 +116,12 @@ public class Tank {
         return dimensionY;
     }
 
-
-    public void setAngle(int angle) {
-        this.angle = angle;
-    }
-
     public int getAngle() {
         return angle;
     }
 
-    public boolean isAlive() {
-        return alive;
-    }
+
+
 
     public void destruction(){
         if(health + extraHealth <= 0)
@@ -117,42 +129,53 @@ public class Tank {
     }
 
 
-
-    // tank's moving methods.
+    /**
+     *  tank's moving methods.
+      */
     public void moveUp(){
         int tmpX , tmpY;
         tmpX = dimensionX;
-        tmpY = dimensionY - 8;
+        tmpY = dimensionY - SPEED;
         if (checkMove(tmpX , tmpY))
         dimensionY = tmpY;
     }
 
+    /**
+     *
+     */
     public void moveDown(){
         int tmpX , tmpY;
         tmpX = dimensionX;
-        tmpY = dimensionY + 8;
+        tmpY = dimensionY + SPEED;
         if (checkMove(tmpX , tmpY))
             dimensionY = tmpY;
     }
 
+    /**
+     *
+     */
     public void moveRight(){
         int tmpX , tmpY;
-        tmpX = dimensionX + 8;
+        tmpX = dimensionX + SPEED;
         tmpY = dimensionY;
         if (checkMove(tmpX , tmpY))
             dimensionX = tmpX;
     }
 
+    /**
+     *
+     */
     public void moveLeft(){
         int tmpX , tmpY;
-        tmpX = dimensionX - 8;
+        tmpX = dimensionX - SPEED;
         tmpY = dimensionY;
         if (checkMove(tmpX , tmpY))
             dimensionX = tmpX;
     }
 
-
-    // tank's turning methods.
+    /**
+     * tank's turning methods.
+     */
     public void turnClockwise(){
         angle += 4;
     }
@@ -161,27 +184,40 @@ public class Tank {
         angle -= 4;
     }
 
+
+    /**
+     * tank's shooting method.
+     */
     public void fire() {
         Thread thread = new Thread() {
             @Override
             public void run() {
-                checkFire();
+                if(!fireAvalable())
+                    return;
                 bullet = new Bullet();
                 bullet.setDimensionX(dimensionX);
                 bullet.setDimensionY(dimensionY);
                 bullet.setAngle(angle);
                 long time = System.currentTimeMillis();
-                while (bullet.isAlive() && (System.currentTimeMillis() - time) <= 4){
+                while (bullet.isAlive() && (System.currentTimeMillis() - time) <= 4000){
                     bullet.move();
+                    try {
+                        sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
-                if (!(bullet.isAlive() && (System.currentTimeMillis() - time) <= 4))
+                if (!(bullet.isAlive() && (System.currentTimeMillis() - time) > 4000))
                     bullet.kill();
             }
         };
         thread.start();
     }
 
-    public void checkFire(){
+    /**
+     * controlling number of tank's shots in a minute.
+     */
+    public boolean fireAvalable(){
         if (!shot1){
             shot1 = true;
             Thread t = new Thread(){
@@ -204,13 +240,24 @@ public class Tank {
             catch (Exception e){
                 e.printStackTrace();
             }
+            return  true;
         }
-        if (!shot2){
+        else if (!shot2){
             shot2 = true;
+            return  true;
         }
+
+        return false;
     }
 
 
+
+
+
+
+    /**
+     * a method for random movement. being used for computer.
+     */
     public void randomMove() {
         Random random = new Random();
         int rand1 = random.nextInt(4);
@@ -242,6 +289,9 @@ public class Tank {
 
     }
 
+    /**
+     * controlling the starting coordinates of tank.
+     */
     public void checkBound() {
         this.setDimensionX(Math.max(this.getDimensionX(), Map.WIDTH_CONSTANT));
         this.setDimensionX(Math.min(this.getDimensionX(), GameFrame.GAME_WIDTH - Map.WIDTH_CONSTANT));
@@ -249,6 +299,10 @@ public class Tank {
         this.setDimensionY(Math.min(this.getDimensionY(), GameFrame.GAME_HEIGHT - Map.HEIGHT_CONSTANT));
     }
 
+    /**
+     * rendering tank's image in game frame.
+     * @param graphics2D
+     */
     public void renderTank(Graphics2D graphics2D){
         AffineTransform trans = AffineTransform.getTranslateInstance(dimensionX, dimensionY);
         trans.rotate(Math.toRadians(angle));
@@ -259,6 +313,12 @@ public class Tank {
     }
 
 
+    /**
+     * controlling tank's movement in playGround.
+     * @param tmpX
+     * @param tmpY
+     * @return
+     */
     public boolean checkMove(int tmpX , int tmpY){
         for (Wall wall : Data.walls){
             if (wall.checkOverlap(tmpX, tmpY))
@@ -268,6 +328,9 @@ public class Tank {
     }
 
 
+    /**
+     * initializing coordinates of tank
+     */
     public void summonTank(){
         Random random = new Random();
         int tmpX;
@@ -292,6 +355,9 @@ public class Tank {
     }
 
 
+    /**
+     * checking if the tank was being harmed or not.
+     */
     public void encounter(){
         for (Bullet bullett : Data.bullets){
             if (this.dimensionX - SIDE/2 <= bullett.getDimensionX() && bullett.getDimensionX() <= this.dimensionX + SIDE/2

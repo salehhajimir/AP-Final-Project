@@ -11,7 +11,7 @@ public class Bullet {
     private boolean alive;
     private int damage , dimensionX, dimensionY , extraDamage , side , shootingX , shootingY , maxDamage;
     private double angle;
-    private final double SPEED = 8;
+    private final double SPEED = 16;
 
     private final String BULLET = "C:\\Users\\Asus\\Desktop\\AP final project\\images\\tank and bullet\\bulletBlue2_outline.png";
     private BufferedImage bulletImage;
@@ -85,7 +85,7 @@ public class Bullet {
 
     public void renderBullet(Graphics2D graphics2D){
         AffineTransform trans = AffineTransform.getTranslateInstance(dimensionX, dimensionY);
-        trans.rotate( Math.toRadians(angle));
+        trans.rotate(Math.toRadians(angle));
         graphics2D.drawImage(bulletImage , trans , null);
 
     }

@@ -37,6 +37,7 @@ public class GameState {
         keyDOWN = false;
         keyRIGHT = false;
         keyLEFT = false;
+        keySPACE = false;
         keyA = false;
         keyD = false;
 
@@ -83,14 +84,21 @@ public class GameState {
 
 
 
-        Data.removeBullet();
-        Data.removeWall();
+
 
 
 
         if (keySPACE){
             tank1.fire();
+            try {
+                Thread.sleep(100);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
+
+        Data.removeBullet();
+        Data.removeWall();
 
     }
 
