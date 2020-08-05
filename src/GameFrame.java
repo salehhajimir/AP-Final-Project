@@ -10,20 +10,17 @@ import javax.swing.JFrame;
 
 /**
  * The window on which the rendering is performed.
- * This example uses the modern BufferStrategy approach for double-buffering,
- * actually it performs triple-buffering!
- * For more information on BufferStrategy check out:
- *    http://docs.oracle.com/javase/tutorial/extra/fullscreen/bufferstrategy.html
- *    http://docs.oracle.com/javase/8/docs/api/java/awt/image/BufferStrategy.html
+ * actually it performs triple-buffering.
  */
 public class GameFrame extends JFrame {
 
     public static final int ScorePanel_WIDTH = 240;
     public static final int GAME_HEIGHT = 720;                  // 720p game resolution
     public static final int GAME_WIDTH = 16 * GAME_HEIGHT / 9;  // wide aspect ratio
+    // path of the background's image file.
     private final String BACKGROUND = ".\\images\\backGround.png";
+    // background's image.
     private BufferedImage bufferedImage;
-    private Paint paint;
 
 
 
@@ -152,14 +149,7 @@ public class GameFrame extends JFrame {
 
 
 
-        /*
-        // Print user guide
-        String userGuide
-                = "Use the MOUSE or ARROW KEYS to move the BALL. "
-                + "Press ESCAPE to end the game.";
-        g2d.setFont(g2d.getFont().deriveFont(18.0f));
-        g2d.drawString(userGuide, 10, GAME_HEIGHT - 10);
-        */
+
 
         // Draw GAME OVER
         if (state.gameOver) {
@@ -168,9 +158,38 @@ public class GameFrame extends JFrame {
             g2d.setFont(g2d.getFont().deriveFont(Font.BOLD).deriveFont(64.0f));
             int strWidth = g2d.getFontMetrics().stringWidth(str);
             g2d.drawString(str, (GAME_WIDTH - strWidth) / 2, GAME_HEIGHT / 2);
+
+            // display winner.
+            String winner = "";
+            for (Player player : Data.players){
+                if (player.getPlayerTank().isAlive()){
+                    winner += player.getUserName() + " won!";
+                    break;
+                }
+            }
+
+            g2d.setColor(Color.BLACK);
+            g2d.setFont(g2d.getFont().deriveFont(Font.BOLD).deriveFont(32.0f));
+            int strWidthh = g2d.getFontMetrics().stringWidth(str);
+            g2d.drawString(winner, (GAME_WIDTH - strWidthh) / 2, (GAME_HEIGHT + 60) / 2);
         }
 
-    }
+        // display players' information in score panel.
+        String information = "";
 
+        int height = 0;
+        for (Player player : Data.players){
+            information += player.getUserName() + " --> tank's health : " + player.getPlayerTank().getHealth() + " | player's score : " + player.getPlayerScore();
+
+
+            g2d.setColor(Color.BLACK);
+            g2d.setFont(g2d.getFont().deriveFont(Font.BOLD).deriveFont(16.0f));
+            int strWidthh = g2d.getFontMetrics().stringWidth(information);
+            g2d.drawString(information, (ScorePanel_WIDTH + 10 - strWidthh), height);
+            height += 20;
+        }
+    }
 }
+
+
 

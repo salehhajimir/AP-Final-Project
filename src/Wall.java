@@ -6,39 +6,81 @@ import java.io.File;
 import java.io.IOException;
 
 public class Wall {
+    // suitable width and height for rendering wall's image and coordinates of the center of walls block.
     private int width, height , centerX , centerY;
-    // dimensions of top left corner of each blocl
+    // coordinates of top left corner of each block and amount of the health of the wall.
     private int dimensionX, dimensionY , health;
+    // checking if the wall is alive or not and vulnerability of wall.
     private boolean alive , destructive;
+    // wall image files.
     private BufferedImage destructiveWall, reflectorWall;
+    // margin used for controlling the encounters.
+    private final int MARGIN = 20;
 
+    // image's path.
     public static final String WALL = "C:\\Users\\Asus\\Desktop\\AP final project\\images\\wall\\";
 
 
+    /**
+     * getter and setter methods.
+     * @param dimensionX
+     */
     public void setDimensionX(int dimensionX) {
         this.dimensionX = dimensionX;
     }
 
+    /**
+     *
+     * @param dimensionY
+     */
     public void setDimensionY(int dimensionY) {
         this.dimensionY = dimensionY;
     }
 
+    /**
+     *
+     * @param destructive
+     */
     public void setDestructive(boolean destructive) {
         this.destructive = destructive;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isDestructive() {
         return destructive;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getDimensionX() {
         return dimensionX;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getDimensionY() {
         return dimensionY;
     }
 
+    /**
+     *
+     * @return
+     */
+    public int getHealth() {
+        return health;
+    }
+
+    /**
+     *
+     * @return
+     */
     public boolean isAlive() {
         return alive;
     }
@@ -53,6 +95,7 @@ public class Wall {
         height = Map.HEIGHT_CONSTANT;
 
         alive = true;
+        health = 200;
 
         centerX = dimensionX + (width / 2);
         centerY = dimensionY + (height / 2);
@@ -67,11 +110,17 @@ public class Wall {
         }
     }
 
+    /**
+     * destructing  a wall.
+     */
     public void wallDestruction(){
-        if (health <= 0)
             alive = false;
     }
 
+    /**
+     * rendering wall in game frame.
+     * @param graphics2D
+     */
     public void renderWall(Graphics2D graphics2D){
         AffineTransform trans = AffineTransform.getTranslateInstance(dimensionX, dimensionY);
         BufferedImage image;
@@ -85,17 +134,32 @@ public class Wall {
         graphics2D.drawImage(image , trans , null);
     }
 
+    /**
+     * check if an object overlaps walls or not.
+     * @param x
+     * @param y
+     * @return
+     */
     public boolean checkOverlap(int x , int y){
-        if (x > dimensionX - 8 && x < dimensionX + width + 8 && y > dimensionY -8 && y < dimensionY + height + 8)
+        if (x > dimensionX - MARGIN && x < dimensionX + width + MARGIN && y > dimensionY - MARGIN && y < dimensionY + height + MARGIN)
             return true;
         return false;
     }
 
 
+    /**
+     * controlling shots which encounter wall and controlling health changes.
+     */
     public void encounter(){
         for (Bullet bullett : Data.bullets){
             if (this.checkOverlap(bullett.getDimensionX() , bullett.getDimensionY()) && destructive){
-                this.health -= bullett.getMaxDamage();
+                this.health -= bullett.getDamage();
+
+
+                if (this.health <= 0) {
+                    wallDestruction();
+                    bullett.kill();
+                }
             }
         }
     }

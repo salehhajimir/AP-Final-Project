@@ -4,22 +4,26 @@ import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.io.File;
 
+
+/**
+ * class for setting audios in game and menu.
+ */
 public class Audio {
+
+    // Audios paths.
     static final String MenuMusicLocation = "C:\\Users\\Asus\\Desktop\\AP final project\\Audio\\Menu Song\\Hyouhaku+Kokuten.wav";
     static final String TankExplosion = "C:\\Users\\Asus\\Desktop\\AP final project\\Audio\\Tank explosion sound.wav";
     static final String TankDeparture = "C:\\Users\\Asus\\Desktop\\AP final project\\Audio\\Moving tank sound.wav";
     static final String TankShooting = "C:\\Users\\Asus\\Desktop\\AP final project\\Audio\\Tank shooting sound";
 
-    static Tank tank;
 
-
-
-    public Audio(Tank intendedTank){
-        tank = intendedTank;
+    public Audio() {
     }
 
 
-
+    /**
+     * plays menu music
+     */
     static void playMenuMusic() {
 
         try {
@@ -40,8 +44,11 @@ public class Audio {
         }
     }
 
-   static void tankExplosionSound() {
 
+    /**
+     * plays tank and wall explosion sound.
+     */
+    static void explosionSound() {
         try {
             File musicPath = new File(TankExplosion);
 
@@ -60,8 +67,11 @@ public class Audio {
         }
     }
 
-    static void tankShootingSound(){
 
+    /**
+     * plays shooting sound.
+     */
+    static void shootingSound() {
         try {
             File musicPath = new File(TankShooting);
 
@@ -80,8 +90,10 @@ public class Audio {
         }
     }
 
-    static void tankDepartureSound(){
-
+    /**
+     * plays sound of tank's wheels while moving.
+     */
+    static void tankDepartureSound() {
         try {
             File musicPath = new File(TankDeparture);
 
@@ -100,14 +112,4 @@ public class Audio {
         }
     }
 
-    static void tankDeparture(){
-
-        }
-
-
-    static void tankShooting(){
-    }
-
-    static void tankExplosion() {
-    }
 }

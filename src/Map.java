@@ -2,12 +2,20 @@ import java.io.*;
 import java.util.Date;
 import java.util.Random;
 
+
+/**
+ * this class read the map file and convert it to needed information for program.
+ */
 public class Map {
-    private int sizeX;
-    private int sizeY;
+    //map coordinates.
+    private int sizeX , sizeY;
+    // an array which contains map information.
     private int[][] map;
+    // an array which contains walls information.
     private Wall[][] walls;
+    // an array which contains empty blocks in map.
     private FloorBlock[][] floor;
+    // vars which calculate the relation between map file and game frame.
     public static int WIDTH_CONSTANT, HEIGHT_CONSTANT;
 
     public Map() {

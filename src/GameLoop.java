@@ -1,14 +1,5 @@
 /**
  * A very simple structure for the main game loop.
- * THIS IS NOT PERFECT, but works for most situations.
- * Note that to make this work, none of the 2 methods
- * in the while loop (update() and render()) should be
- * long running! Both must execute very quickly, without
- * any waiting and blocking!
- *
- * Detailed discussion on different game loop design
- * patterns is available in the following link:
- *    http://gameprogrammingpatterns.com/game-loop.html
  */
 public class GameLoop implements Runnable {
 

@@ -6,18 +6,35 @@ public class Team {
 
     private int teamID;
 
+
+    /**
+     * getter and setter methods.
+     * @param teamID
+     */
     public void setTeamID(int teamID) {
         this.teamID = teamID;
     }
 
+    /**
+     *
+     * @param members
+     */
     public void setMembers(ArrayList<Player> members) {
         this.members = members;
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<Player> getMembers() {
         return members;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getTeamID() {
         return teamID;
     }
@@ -33,6 +50,10 @@ public class Team {
 
     }
 
+    /**
+     * removing a player from team.
+     * @param intendedPlayer
+     */
     void removePlayer(Player intendedPlayer){
         if (members.contains(intendedPlayer))
             members.remove(intendedPlayer);
@@ -40,6 +61,10 @@ public class Team {
             JOptionPane.showMessageDialog(null , "This player is not a member of this team yet.");
     }
 
+    /**
+     * calculate team's score by collecting scores of all team members.
+     * @return
+     */
     int calculateTeamScore(){
         int teamScore = 0;
         for (Player player : members){

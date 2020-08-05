@@ -15,21 +15,21 @@ public class Tank {
 
 
 
-    private int dimensionX, dimensionY, angle, health, extraHealth , maxHealth;
-    private boolean shot1 , shot2 , alive;
-    private String userName;
+    // vars fot tank's coordinates , angle , amount of health and indicating color of tank.
+    private int dimensionX, dimensionY, angle, health , tankColor;
+    // booleans for controlling shooting 2 bullets in a second,aliveness and activeness of gift.
+    private boolean shot1 , shot2 , alive , giftActive;
+    // gift which tank achieves.
+    private Gift gift;
+    // path of image's file.
     private final String TANK_IMAGE = ".\\images\\tank and bullet\\";
-
-
-
+    // image file.
     public BufferedImage tankImage;
-
-
     private String[] image = new String[8];
-
-    private final int SIDE = 60;
+    // tank's width and length.
     private final int TANK_WIDTH = 42;
     private final int TANK_LENGTH = 46;
+    // tank's speed.
     private static final int SPEED = 8;
 
     public Tank() {
@@ -37,11 +37,11 @@ public class Tank {
 
 
         health = 100;
-        extraHealth = 0;
-        alive = true;
 
+        alive = true;
         shot1 = false;
         shot2 = false;
+        giftActive = false;
 
 
         image[0] = TANK_IMAGE + "tank_blue.png";
@@ -55,9 +55,9 @@ public class Tank {
 
 
         Random random = new Random();
-        int rand = random.nextInt(6);
+        tankColor = random.nextInt(6);
         try{
-            tankImage = ImageIO.read(new File(image[rand]));
+            tankImage = ImageIO.read(new File(image[tankColor]));
         }
         catch(IOException e){
             System.out.println(e);
@@ -67,64 +67,124 @@ public class Tank {
     }
 
 
-
-    public void setExtraHealth(int extraHealth) {
-        this.extraHealth = extraHealth;
-    }
-
+    /**
+     * getter and setter methods.
+     * @param health
+     */
     public void setHealth(int health) {
         this.health = health;
     }
 
+    /**
+     *
+     * @param dimensionX
+     */
     public void setDimensionX(int dimensionX) {
         this.dimensionX = dimensionX;
     }
 
+    /**
+     *
+     * @param dimensionY
+     */
     public void setDimensionY(int dimensionY) {
         this.dimensionY = dimensionY;
     }
 
+    /**
+     *
+     * @param tankColor
+     */
+    public void setTankColor(int tankColor) {
+        this.tankColor = tankColor;
+    }
+
+    /**
+     *
+     * @param giftActive
+     */
+    public void setGiftActive(boolean giftActive) {
+        this.giftActive = giftActive;
+    }
+
+    /**
+     *
+     * @param gift
+     */
+    public void setGift(Gift gift) {
+        this.gift = gift;
+    }
+
+    /**
+     *
+     * @param angle
+     */
     public void setAngle(int angle) {
         this.angle = angle;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isAlive() {
         return alive;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    /**
+     *
+     * @return
+     */
+    public boolean isGiftActive() {
+        return giftActive;
     }
 
-    public String getUserName() {
-        return userName;
+    /**
+     *
+     * @return
+     */
+    public Gift getGift() {
+        return gift;
     }
 
-    public int getExtraHealth() {
-        return extraHealth;
-    }
-
+    /**
+     *
+     * @return
+     */
     public int getHealth() {
         return health;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getDimensionX() {
         return dimensionX;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getDimensionY() {
         return dimensionY;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getAngle() {
         return angle;
     }
 
 
-
-
+    /**
+     * killing tank by checking its health
+     */
     public void destruction(){
-        if(health + extraHealth <= 0)
+        if(health <= 0)
             alive = false;
     }
 
@@ -177,11 +237,19 @@ public class Tank {
      * tank's turning methods.
      */
     public void turnClockwise(){
-        angle += 4;
+        angle -= 4;
+        angle = angle % 360;
+        if (angle < 0)
+            angle += 360;
     }
 
+    /**
+     *
+     */
     public void turnAntiClockwise(){
-        angle -= 4;
+        angle += 4;
+        angle = angle % 360;
+
     }
 
 
@@ -218,7 +286,7 @@ public class Tank {
     }
 
     /**
-     * controlling number of tank's shots in a minute.
+     * controlling number of tank's shots in a second.
      */
     public boolean fireAvalable(){
         if (!shot1){
@@ -308,7 +376,7 @@ public class Tank {
      */
     public void renderTank(Graphics2D graphics2D){
         AffineTransform trans = AffineTransform.getTranslateInstance(dimensionX, dimensionY);
-        trans.rotate(Math.toRadians(angle));
+        trans.rotate(Math.toRadians(angle + 180));
         trans.translate(-TANK_WIDTH/2 , -TANK_LENGTH/2);
         graphics2D.drawImage(tankImage , trans , null);
         //graphics2D.drawRect(dimensionX , dimensionY , side , side);
@@ -362,13 +430,31 @@ public class Tank {
      * checking if the tank was being harmed or not.
      */
     public void encounter(){
+        Rectangle rect1 = new Rectangle(dimensionX,dimensionY , TANK_WIDTH,TANK_LENGTH );
         for (Bullet bullett : Data.bullets){
-            if (this.dimensionX - SIDE/2 <= bullett.getDimensionX() && bullett.getDimensionX() <= this.dimensionX + SIDE/2
-            && this.dimensionY - SIDE/2 <= bullett.getDimensionY() && bullett.getDimensionY() <= this.dimensionY + SIDE/2){
-                this.maxHealth -= bullett.getMaxDamage();
+            Rectangle rect2 = new Rectangle(bullett.getDimensionX(),bullett.getDimensionY() ,12 , 16);
+            if (checkOverlap(bullett.getDimensionX() , bullett.getDimensionY())){
+                this.health -= bullett.getDamage();
+                if (health <= 0){
+                    destruction();
+                }
+                bullett.kill();
             }
         }
     }
+
+    /**
+     * cheking the overlap of other objects with tank.
+     * @param x
+     * @param y
+     * @return
+     */
+    public boolean checkOverlap(int x , int y){
+        if (x > dimensionX - 10 && x < dimensionX + 10 && y > dimensionY - 10 && y < dimensionY + 10)
+            return true;
+        return false;
+    }
+
 }
 
 

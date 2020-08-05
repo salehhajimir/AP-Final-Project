@@ -16,10 +16,14 @@ import java.util.TimerTask;
 public class GameState {
 
 
+    // booleans using for tank actions.
     private boolean keyUP, keyDOWN, keyRIGHT, keyLEFT, keyA , keyD , keySPACE;
+    // boolean which indicates the game is over or not
     public boolean  gameOver;
+    // keyboard handler
     private KeyHandler keyHandler;
 
+    private Player player , computer;
     private Tank tank1 , tank2;
 
     public Tank getTank1() {
@@ -43,22 +47,26 @@ public class GameState {
 
         tank1 = new Tank();
         tank2 = new Tank();
+        player = new Player("player");
+        computer = new Player("computer");
+        player.setPlayerTank(tank1);
+        computer.setPlayerTank(tank2);
 
         Data.tanks.add(tank1);
         Data.tanks.add(tank2);
-
-
-
+        Data.players.add(player);
+        Data.players.add(computer);
 
         keyHandler = new KeyHandler();
     }
+
+
 
     /**
      * The method which updates the game state.
      */
     public void update() {
 
-        //update tank states.
         if (keyUP)
             tank1.moveUp();
 
@@ -72,15 +80,15 @@ public class GameState {
             tank1.moveRight();
 
         if (keyA)
-            tank1.turnAntiClockwise();
+            tank1.turnClockwise();
 
         if (keyD)
-           tank1.turnClockwise();
+           tank1.turnAntiClockwise();
 
 
-        //tank1.checkBound();
+        tank1.checkBound();
         tank2.randomMove();
-        //tank2.checkBound();
+        tank2.checkBound();
 
 
 
@@ -97,14 +105,32 @@ public class GameState {
             }
         }
 
+        for (Wall wall : Data.walls){
+            if (wall.isDestructive())
+                wall.encounter();
+                }
+
+
+
+        for (Tank tank : Data.tanks){
+            tank.encounter();
+            tank.destruction();
+        }
+
+
+
         Data.removeBullet();
         Data.removeWall();
+        Data.removeTank();
 
+        checkGameOver();
     }
 
 
-
-
+    /**
+     *
+     * @return
+     */
     public KeyListener getKeyListener() {
         return keyHandler;
     }
@@ -181,6 +207,19 @@ public class GameState {
 
     }
 
+
+    /**
+     * checking if the game is over or not and calculate each player's score.
+     */
+    public void checkGameOver(){
+        if (Data.tanks.size() == 1) {
+            gameOver = true;
+            for (Player player : Data.players){
+                player.calculateScore();
+                //System.out.println(player.getUserName() + " --> " + player.getPlayerScore());
+            }
+        }
+    }
 
 }
 
