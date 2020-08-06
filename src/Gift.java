@@ -125,35 +125,6 @@ public class Gift {
     }
 
 
-    /**
-     * initializing gift's coordinates.
-     */
-    public void summonGift(){
-        Random random = new Random();
-        int tmpX;
-        int tmpY;
 
-        while (true) {
-            tmpX  = random.nextInt(GameFrame.GAME_WIDTH);
-            tmpY = random.nextInt(GameFrame.GAME_HEIGHT);
-            boolean breaking=false;
-            for (FloorBlock floorBlock : Data.floor) {
-                if ((floorBlock.checkOverlap(tmpX,tmpY))) {
-                    this.coordinateX = tmpX;
-                    this.coordinateY = tmpY;
-                    breaking=true;
-                    break;
-                }
-            }
-            if(breaking)
-                break;
-        }
-    }
-
-
-    public boolean checkOverlap(Rectangle tank){
-        Rectangle gift = new Rectangle(coordinateX, coordinateY, GIFT_SIDE, GIFT_SIDE);
-        return tank.intersects(gift);
-    }
 
 }
