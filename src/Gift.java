@@ -136,12 +136,12 @@ public class Gift {
         while (true) {
             tmpX  = random.nextInt(GameFrame.GAME_WIDTH);
             tmpY = random.nextInt(GameFrame.GAME_HEIGHT);
-            boolean breaking=false;
+            boolean breaking = false;
             for (FloorBlock floorBlock : Data.floor) {
                 if ((floorBlock.checkOverlap(tmpX,tmpY))) {
                     this.coordinateX = tmpX;
                     this.coordinateY = tmpY;
-                    breaking=true;
+                    breaking = true;
                     break;
                 }
             }
@@ -154,6 +154,23 @@ public class Gift {
     public boolean checkOverlap(Rectangle tank){
         Rectangle gift = new Rectangle(coordinateX, coordinateY, GIFT_SIDE, GIFT_SIDE);
         return tank.intersects(gift);
+    }
+
+
+
+    public void execute(){
+        for (Tank tank : Data.tanks){
+            Rectangle rect1 = new Rectangle(tank.getDimensionX(), tank.getDimensionY(), Tank.TANK_WIDTH, Tank.TANK_LENGTH);
+            if (checkOverlap(rect1)) {
+                if (type == 0){
+                    tank.setHealth((int)(1.1 * tank.getHealth()));
+                }
+
+                else if (type == 1){
+
+                }
+            }
+        }
     }
 
 }

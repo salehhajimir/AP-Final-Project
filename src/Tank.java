@@ -19,19 +19,19 @@ public class Tank {
     private int dimensionX, dimensionY, angle, health , tankColor;
     // booleans for controlling shooting 2 bullets in a second and aliveness.
     private boolean shot1 , shot2 , alive;
-    // gift which tank achieves.
-    private Gift gift;
     // path of image's file.
     private final String TANK_IMAGE = ".\\images\\tank and bullet\\";
     // image file.
     public BufferedImage tankImage;
     private String[] image = new String[8];
     // tank's width and length.
-    private final int TANK_WIDTH = 42;
-    private final int TANK_LENGTH = 46;
+     static final int TANK_WIDTH = 42;
+     static final int TANK_LENGTH = 46;
     // tank's speed.
     private static final int SPEED = 8;
-    //private Bullet
+    //tank's bullet which saves bullet's features.
+    private Bullet bullet = new Bullet();
+
 
     public Tank() {
         summonTank();
@@ -42,7 +42,7 @@ public class Tank {
         alive = true;
         shot1 = false;
         shot2 = false;
-        gift = null;
+
 
         image[0] = TANK_IMAGE + "tank_blue.png";
         image[1] = TANK_IMAGE + "tank_dark.png";
@@ -77,6 +77,22 @@ public class Tank {
 
     /**
      *
+     * @param bullet
+     */
+    public void setBullet(Bullet bullet) {
+        this.bullet = bullet;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Bullet getBullet() {
+        return bullet;
+    }
+
+    /**
+     *
      * @param dimensionX
      */
     public void setDimensionX(int dimensionX) {
@@ -103,9 +119,6 @@ public class Tank {
      *
      * @param gift
      */
-    public void setGift(Gift gift) {
-        this.gift = gift;
-    }
 
     /**
      *
@@ -127,9 +140,6 @@ public class Tank {
      *
      * @return
      */
-    public Gift getGift() {
-        return gift;
-    }
 
     /**
      *
@@ -440,23 +450,9 @@ public class Tank {
         return false;
     }
 
-    public void achieveGiftAbility(){
-        if (checkGift()){
-            if (gift.getType() == 0)
-                this.health += (int)(0.1 * health);
-        }
-    }
 
-    public boolean checkGift(){
-        for (Gift gift : Data.gifts){
-            if (gift.checkOverlap(new Rectangle(dimensionX , dimensionY , TANK_WIDTH , TANK_LENGTH))) {
-                this.gift = gift;
-                gift.setActive(true);
-                return true;
-            }
-        }
-        return false;
-    }
+
+
 
 }
 

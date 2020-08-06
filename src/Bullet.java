@@ -19,6 +19,7 @@ public class Bullet {
 
     private final int SIDE = 16;
 
+
     private Wall touchWall;
 
     // image's path.
