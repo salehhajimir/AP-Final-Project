@@ -25,6 +25,7 @@ public class GameState {
 
     private Player player , computer;
     private Tank tank1 , tank2;
+    private Gift gift;
 
     public Tank getTank1() {
         return tank1;
@@ -92,10 +93,6 @@ public class GameState {
 
 
 
-
-
-
-
         if (keySPACE){
             tank1.fire();
             try {
@@ -105,23 +102,32 @@ public class GameState {
             }
         }
 
+        /*// handling bullets' encounters with walls.
         for (Wall wall : Data.walls){
             if (wall.isDestructive())
                 wall.encounter();
-                }
+                }*/
 
-
-
+        // handling bullets' encounters with tanks.
         for (Tank tank : Data.tanks){
             tank.encounter();
             tank.destruction();
         }
 
-
+        Thread thread = new Thread(){
+            @Override
+            public void run() {
+                if (!gift.isActive()){
+                    gift = new Gift();
+                }
+            }
+        };
 
         Data.removeBullet();
         Data.removeWall();
         Data.removeTank();
+
+
 
         checkGameOver();
     }

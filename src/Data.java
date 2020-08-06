@@ -16,6 +16,8 @@ public class Data {
     public static ArrayList<FloorBlock> floor = new ArrayList<FloorBlock>();
     // arraylist for players.
     public static ArrayList<Player> players = new ArrayList<Player>();
+    // arraylist for gifts.
+    public static ArrayList<Gift> gifts = new ArrayList<Gift>();
 
 
     /**
@@ -51,6 +53,16 @@ public class Data {
         for (int i = 0 ; i < tanks.size(); i++){
             if (!tanks.get(i).isAlive()){
                 tanks.remove(i);
+                i--;
+            }
+        }
+    }
+
+     // removing gift if it's not alive.
+    public static void removeGift(){
+        for (int i = 0 ; i < gifts.size(); i++){
+            if (!gifts.get(i).isActive()){
+                gifts.remove(i);
                 i--;
             }
         }

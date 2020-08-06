@@ -14,9 +14,12 @@ public class Bullet {
     // bullet's angle.
     private double angle;
     // bullet's speed.
-    private final double SPEED = 16;
+    private final double SPEED = 2;
     // coordinates of the place where bullet hit a wall.
-    ;private int touchedWallX , touchedWallY;
+
+    private final int SIDE = 16;
+
+    private Wall touchWall;
 
     // image's path.
     private final String BULLET = ".\\images\\tank and bullet\\bulletBlue2_outline.png";
@@ -104,12 +107,10 @@ public class Bullet {
         return dimensionY;
     }
 
-    /**
-     *
-     * @return
-     */
     public double getAngle() {
-        return angle;
+        if(angle<0)
+            angle+=360;
+        return angle%360;
     }
 
     /**
@@ -143,7 +144,6 @@ public class Bullet {
         angle += 0;
         dimensionX += SPEED * Math.cos(Math.abs(Math.toRadians(angle)));
         dimensionY += SPEED * Math.sin(Math.toRadians(angle));
-        reflectBullet();
     }
 
 
@@ -167,73 +167,118 @@ public class Bullet {
 
 
     /**
-     * controlling the reflection of bullet by hitting the wall.
+     * controlling the reflection of bullet when it hits a wall.
      */
     public void reflectBullet() {
-        double reflectingAngle;
         if (isWallTouched()) {
-            reflectingAngle = Math.atan2(dimensionY - shootingY, dimensionX - shootingX);
-            //System.out.println("AANNGGLLEE "+Math.toDegrees(reflectingAngle));
-            this.setAngle(Math.abs(Math.toDegrees(reflectingAngle)) - 180);
+            getRefledtAngleCalculate();
         }
 
     }
+
 
 
     /**
      * checking if bullet touched a wall or not.
      * @return
      */
-   public boolean isWallTouched() {
+
+    public boolean isWallTouched() {
         for (Wall wall : Data.walls) {
-            if (wall.checkOverlap(dimensionX, dimensionY)) {
-                touchedWallX = wall.getDimensionX();
-                touchedWallY = wall.getDimensionY();
+            if (wall.checkOverlap(getHeadX(), getHeadY()))
+            {
+                touchWall=wall;
+                wall.encounter(this);
                 return true;
             }
+
         }
-        touchedWallX = -1;
-        touchedWallY = -1;
         return false;
     }
 
-    /*public void reflectBullet() {
-        double reflectingAngle;
-        if (isWallTouched()) {
-            getRefledtAngleCalculate();
 
-        }
 
-    }*/
 
-    /*public void getRefledtAngleCalculate()
+
+    public void getRefledtAngleCalculate()
     {
-        if(dimensionY<touchedWallY && dimensionX>=touchedWallX)
+        double headX=getHeadX();
+        double headY=getHeadY();
+
+        double topDistance=Math.abs(touchWall.getTop()-headY);
+        double downDistance=Math.abs(touchWall.getDown()-headY);
+        double leftDistance=Math.abs(touchWall.getLeft()-headX);
+        double rightDistance=Math.abs(touchWall.getRight()-headX);
+
+        int safeX=touchWall.getWidth()/50;
+        int safey=touchWall.getHeight()/50;
+
+        angle=getAngle();
+
+        if(headX>touchWall.getLeft()+safeX && headX< touchWall.getRight()-safeX) {
+
+
+            if (downDistance < topDistance) {
+                if(angle==270)
+                    angle+=180;
+                else if(angle>270)
+                    angle += 90;
+                else
+                    angle-=90;
+            } else {
+                if(angle==90)
+                    angle += 180;
+                else if(angle<90)
+                    angle-=90;
+                else
+                    angle+=90;
+            }
+        }
+        else if (headY>touchWall.getTop()+safey && headY< touchWall.getDown()-safey)
         {
-            System.out.println("3");
-            angle-=90;
-            dimensionY-=SPEED;
+            if(leftDistance<rightDistance)
+            {
+                if(angle==0)
+                    angle += 180;
+                else if(angle<90)
+                    angle+=90;
+                else
+                    angle-=90;
+            }
+            else
+            {
+                if(angle==180)
+                    angle -= 180;
+                else if(angle<180)
+                    angle-=90;
+                else
+                    angle+=90;
+            }
+
+
         }
-        else if(dimensionY>touchedWallY && dimensionX>=touchedWallX){
-            System.out.println("4");
-            angle+=90;
-            dimensionY+=SPEED;
+        else {
+            angle += 180;
+
         }
-        else if(dimensionX<touchedWallX )
-        {
-//            System.out.println("1");
-//            System.out.println(dimensionX+" "+touchWallX);
-            angle-=90;
-            dimensionX-=SPEED;
-        }
-        else if(dimensionX>touchedWallX)
-        {
-//            System.out.println("2");
-//            System.out.println(dimensionX+" "+touchWallX);
-            angle-=90;
-            dimensionX+=SPEED;
-        }
-    }*/
+
+    }
+
+
+
+    public double getHeadX()
+    {
+        double cos=Math.cos(Math.toRadians(angle))* SIDE;
+        double headX=dimensionX+cos;
+        return headX;
+
+    }
+
+    public double getHeadY()
+    {
+        double sin=Math.sin(Math.toRadians(angle))*SIDE;
+        return dimensionY+sin;
+    }
 
 
 }

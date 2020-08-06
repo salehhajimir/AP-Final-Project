@@ -20,6 +20,9 @@ public class Gift {
     private final int GIFT_SIDE = 25;
     // String which shows the type of the gift.
     private String giftType;
+    // var which saves the exact time when gift was created.
+    private long time;
+
 
 
     /**
@@ -30,18 +33,66 @@ public class Gift {
         return giftType;
     }
 
+    /**
+     *
+     * @return
+     */
+    public int getType() {
+        return type;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public int getCoordinateX() {
+        return coordinateX;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public int getCoordinateY() {
+        return coordinateY;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public long getTime() {
+        return time;
+    }
+
+    /**
+     *
+     * @param active
+     */
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public boolean isActive() {
+        return active;
+    }
 
     public Gift(){
         summonGift();
-        
+        time = System.currentTimeMillis();
+
+
         Random random = new Random();
         type = random.nextInt(2);
         if(type == 0)
             giftType = "extra health";
         else if (type == 1)
-            giftType = "exta damage";
+            giftType = "extra damage";
 
-    active = false;
 
         try {
 
@@ -99,5 +150,10 @@ public class Gift {
         }
     }
 
+
+    public boolean checkOverlap(Rectangle tank){
+        Rectangle gift = new Rectangle(coordinateX, coordinateY, GIFT_SIDE, GIFT_SIDE);
+        return tank.intersects(gift);
+    }
 
 }

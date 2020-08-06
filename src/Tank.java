@@ -17,8 +17,8 @@ public class Tank {
 
     // vars fot tank's coordinates , angle , amount of health and indicating color of tank.
     private int dimensionX, dimensionY, angle, health , tankColor;
-    // booleans for controlling shooting 2 bullets in a second,aliveness and activeness of gift.
-    private boolean shot1 , shot2 , alive , giftActive;
+    // booleans for controlling shooting 2 bullets in a second and aliveness.
+    private boolean shot1 , shot2 , alive;
     // gift which tank achieves.
     private Gift gift;
     // path of image's file.
@@ -31,6 +31,7 @@ public class Tank {
     private final int TANK_LENGTH = 46;
     // tank's speed.
     private static final int SPEED = 8;
+    //private Bullet
 
     public Tank() {
         summonTank();
@@ -41,8 +42,7 @@ public class Tank {
         alive = true;
         shot1 = false;
         shot2 = false;
-        giftActive = false;
-
+        gift = null;
 
         image[0] = TANK_IMAGE + "tank_blue.png";
         image[1] = TANK_IMAGE + "tank_dark.png";
@@ -101,14 +101,6 @@ public class Tank {
 
     /**
      *
-     * @param giftActive
-     */
-    public void setGiftActive(boolean giftActive) {
-        this.giftActive = giftActive;
-    }
-
-    /**
-     *
      * @param gift
      */
     public void setGift(Gift gift) {
@@ -129,14 +121,6 @@ public class Tank {
      */
     public boolean isAlive() {
         return alive;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public boolean isGiftActive() {
-        return giftActive;
     }
 
     /**
@@ -265,15 +249,16 @@ public class Tank {
                 Bullet bullet = new Bullet();
                 bullet.setShootingX(dimensionX);
                 bullet.setShootingY(dimensionY);
-                bullet.setDimensionX(dimensionX);
-                bullet.setDimensionY(dimensionY);
+                bullet.setDimensionX(dimensionX + (int)(20 * Math.cos(Math.abs(Math.toRadians(angle)))));
+                bullet.setDimensionY(dimensionY + (int)(20 * Math.sin(Math.toRadians(angle))));
                 bullet.setAngle(angle);
                 long time = System.currentTimeMillis();
                 while (bullet.isAlive() && (System.currentTimeMillis() - time) <= 4000){
                     bullet.move();
+                    bullet.reflectBullet();
 
                     try {
-                        sleep(100);
+                        sleep(10);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -430,9 +415,9 @@ public class Tank {
      * checking if the tank was being harmed or not.
      */
     public void encounter(){
-        Rectangle rect1 = new Rectangle(dimensionX,dimensionY , TANK_WIDTH,TANK_LENGTH );
+        //Rectangle rect1 = new Rectangle(dimensionX,dimensionY , TANK_WIDTH,TANK_LENGTH );
         for (Bullet bullett : Data.bullets){
-            Rectangle rect2 = new Rectangle(bullett.getDimensionX(),bullett.getDimensionY() ,12 , 16);
+            //Rectangle rect2 = new Rectangle(bullett.getDimensionX(),bullett.getDimensionY() ,12 , 16);
             if (checkOverlap(bullett.getDimensionX() , bullett.getDimensionY())){
                 this.health -= bullett.getDamage();
                 if (health <= 0){
@@ -450,8 +435,26 @@ public class Tank {
      * @return
      */
     public boolean checkOverlap(int x , int y){
-        if (x > dimensionX - 10 && x < dimensionX + 10 && y > dimensionY - 10 && y < dimensionY + 10)
+        if (x > dimensionX - 15 && x < dimensionX + 15 && y > dimensionY - 15 && y < dimensionY + 15)
             return true;
+        return false;
+    }
+
+    public void achieveGiftAbility(){
+        if (checkGift()){
+            if (gift.getType() == 0)
+                this.health += (int)(0.1 * health);
+        }
+    }
+
+    public boolean checkGift(){
+        for (Gift gift : Data.gifts){
+            if (gift.checkOverlap(new Rectangle(dimensionX , dimensionY , TANK_WIDTH , TANK_LENGTH))) {
+                this.gift = gift;
+                gift.setActive(true);
+                return true;
+            }
+        }
         return false;
     }
 

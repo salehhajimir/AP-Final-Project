@@ -15,7 +15,7 @@ public class Wall {
     // wall image files.
     private BufferedImage destructiveWall, reflectorWall;
     // margin used for controlling the encounters.
-    private final int MARGIN = 20;
+    private final int MARGIN = 5;
 
     // image's path.
     public static final String WALL = "C:\\Users\\Asus\\Desktop\\AP final project\\images\\wall\\";
@@ -140,7 +140,7 @@ public class Wall {
      * @param y
      * @return
      */
-    public boolean checkOverlap(int x , int y){
+    public boolean checkOverlap(double x , double y){
         if (x > dimensionX - MARGIN && x < dimensionX + width + MARGIN && y > dimensionY - MARGIN && y < dimensionY + height + MARGIN)
             return true;
         return false;
@@ -150,9 +150,8 @@ public class Wall {
     /**
      * controlling shots which encounter wall and controlling health changes.
      */
-    public void encounter(){
-        for (Bullet bullett : Data.bullets){
-            if (this.checkOverlap(bullett.getDimensionX() , bullett.getDimensionY()) && destructive){
+    public void encounter(Bullet bullett){
+            if (destructive){
                 this.health -= bullett.getDamage();
 
 
@@ -162,5 +161,32 @@ public class Wall {
                 }
             }
         }
+
+
+
+    public int getTop()
+    {
+        return dimensionY;
+    }
+    public int getDown()
+    {
+        return dimensionY+height;
+    }
+    public int getLeft()
+    {
+        return dimensionX;
+    }
+    public int getRight()
+    {
+        return dimensionX+width;
+    }
+
+    public int getWidth()
+    {
+        return  width;
+    }
+    public  int getHeight()
+    {
+        return  height;
     }
 }
