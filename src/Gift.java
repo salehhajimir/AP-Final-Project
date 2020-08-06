@@ -167,7 +167,7 @@ public class Gift {
                 }
 
                 else if (type == 1){
-
+                    tank.getBullet().setDamage(2 * tank.getBullet().getDamage());
                 }
             }
         }

@@ -256,16 +256,17 @@ public class Tank {
             public void run() {
                 if(!fireAvalable())
                     return;
-                Bullet bullet = new Bullet();
-                bullet.setShootingX(dimensionX);
-                bullet.setShootingY(dimensionY);
-                bullet.setDimensionX(dimensionX + (int)(20 * Math.cos(Math.abs(Math.toRadians(angle)))));
-                bullet.setDimensionY(dimensionY + (int)(20 * Math.sin(Math.toRadians(angle))));
-                bullet.setAngle(angle);
+                Bullet bullett = new Bullet();
+                bullett.setDamage(bullet.getDamage());
+                bullett.setShootingX(dimensionX);
+                bullett.setShootingY(dimensionY);
+                bullett.setDimensionX(dimensionX + (int)(20 * Math.cos(Math.abs(Math.toRadians(angle)))));
+                bullett.setDimensionY(dimensionY + (int)(20 * Math.sin(Math.toRadians(angle))));
+                bullett.setAngle(angle);
                 long time = System.currentTimeMillis();
-                while (bullet.isAlive() && (System.currentTimeMillis() - time) <= 4000){
-                    bullet.move();
-                    bullet.reflectBullet();
+                while (bullett.isAlive() && (System.currentTimeMillis() - time) <= 4000){
+                    bullett.move();
+                    bullett.reflectBullet();
 
                     try {
                         sleep(10);
@@ -274,7 +275,7 @@ public class Tank {
                     }
                 }
                 if ((System.currentTimeMillis() - time) > 4000)
-                    bullet.kill();
+                    bullett.kill();
             }
         };
         thread.start();
