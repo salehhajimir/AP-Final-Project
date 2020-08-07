@@ -20,13 +20,16 @@ public class Data {
     public static ArrayList<Gift> gifts = new ArrayList<Gift>();
 
 
-    /*static {
+    /**
+     * add gifts which should be rendered in game frame.
+      */
+    public static void addGift(){
         gifts.add(0 , new Gift());
         gifts.add(1 , new Gift());
 
         gifts.get(0).setType(0);
         gifts.get(1).setType(1);
-    }*/
+    }
 
 
     /**

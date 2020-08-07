@@ -146,7 +146,6 @@ public class Bullet {
         angle += 0;
         dimensionX += SPEED * Math.cos(Math.abs(Math.toRadians(angle)));
         dimensionY += SPEED * Math.sin(Math.toRadians(angle));
-        System.out.println(angle);
     }
 
 

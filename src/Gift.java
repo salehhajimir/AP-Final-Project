@@ -17,11 +17,10 @@ public class Gift {
     // gift images.
     private BufferedImage extraDamageGift, extraHealthGift;
     // amount of the gift sides.
-    private final int GIFT_SIDE = 25;
+    private final int GIFT_SIDE = 64;
     // String which shows the type of the gift.
     private String giftType;
     // var which saves the exact time when gift was created.
-    private long time;
 
 
 
@@ -65,13 +64,6 @@ public class Gift {
     }
 
     /**
-     * @return
-     */
-    public long getTime() {
-        return time;
-    }
-
-    /**
      * @param active
      */
     public void setActive(boolean active) {
@@ -87,7 +79,7 @@ public class Gift {
 
     public Gift() {
         summonGift();
-        time = System.currentTimeMillis();
+        active = true;
 
 
         Random random = new Random();
@@ -100,8 +92,8 @@ public class Gift {
 
         try {
 
-            extraDamageGift = ImageIO.read(new File(giftImage + "oilSpill_large.png"));
-            extraHealthGift = ImageIO.read(new File(giftImage + "sandbagBrown.png"));
+            extraDamageGift = ImageIO.read(new File(giftImage + "scifiEnvironment_08.png"));
+            extraHealthGift = ImageIO.read(new File(giftImage + "scifiEnvironment_02.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -123,7 +115,7 @@ public class Gift {
             image = extraDamageGift;
         }
 
-        trans.scale(GIFT_SIDE / 50, GIFT_SIDE / 50);
+        trans.scale(GIFT_SIDE / 4, GIFT_SIDE / 4);
         graphics2D.drawImage(image, trans, null);
     }
 

@@ -3,11 +3,8 @@ import com.sun.xml.internal.bind.v2.TODO;
 import javax.sql.DataSource;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.Map;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * This class holds the state of game and all of its elements.
@@ -46,6 +43,7 @@ public class GameState {
         keyA = false;
         keyD = false;
 
+        Data.addGift();
         tank1 = new Tank();
         tank2 = new Tank();
         player = new Player("player");
@@ -68,6 +66,7 @@ public class GameState {
      */
     public void update() {
 
+        // execute actions by receiving inputs from player.
         if (keyUP)
             tank1.moveUp();
 
@@ -86,13 +85,6 @@ public class GameState {
         if (keyD)
            tank1.turnAntiClockwise();
 
-
-        tank1.checkBound();
-        tank2.randomMove();
-        tank2.checkBound();
-
-
-
         if (keySPACE){
             tank1.fire();
             try {
@@ -102,6 +94,9 @@ public class GameState {
             }
         }
 
+        tank1.checkBound();
+        tank2.randomMove();
+        tank2.checkBound();
 
 
         // handling bullets' encounters with tanks.
@@ -110,11 +105,19 @@ public class GameState {
             tank.destruction();
         }
 
-
-
+        // remove dead objects from the game.
         Data.removeBullet();
         Data.removeWall();
         Data.removeTank();
+
+        if (System.currentTimeMillis() % 100000000 == 0){
+            Data.gifts.get(0).setActive(false);
+            Data.gifts.get(1).setActive(false);
+        }
+
+        if (System.currentTimeMillis() % 100000000 <= 5000){
+
+        }
 
 
 
