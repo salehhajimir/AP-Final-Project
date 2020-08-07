@@ -24,6 +24,7 @@ public class Bullet {
 
     // image's path.
     private final String BULLET = ".\\images\\tank and bullet\\bulletBlue2_outline.png";
+    private final String BULLET1 = ".\\images\\tank and bullet\\cannonball.png";
     // image's file.
     private BufferedImage bulletImage;
 
@@ -145,6 +146,7 @@ public class Bullet {
         angle += 0;
         dimensionX += SPEED * Math.cos(Math.abs(Math.toRadians(angle)));
         dimensionY += SPEED * Math.sin(Math.toRadians(angle));
+        System.out.println(angle);
     }
 
 
@@ -227,10 +229,10 @@ public class Bullet {
                 else
                     angle-=90;
             } else {
-                if(angle==90)
+                if(angle == 90)
                     angle += 180;
-                else if(angle<90)
-                    angle-=90;
+                else if(angle < 90)
+                    angle -= 90;
                 else
                     angle+=90;
             }

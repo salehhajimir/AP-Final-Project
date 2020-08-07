@@ -20,6 +20,15 @@ public class Data {
     public static ArrayList<Gift> gifts = new ArrayList<Gift>();
 
 
+    /*static {
+        gifts.add(0 , new Gift());
+        gifts.add(1 , new Gift());
+
+        gifts.get(0).setType(0);
+        gifts.get(1).setType(1);
+    }*/
+
+
     /**
      * removing bullet if it's not alive.
      */
@@ -58,7 +67,7 @@ public class Data {
         }
     }
 
-     // removing gift if it's not alive.
+    // removing gift if it's not alive.
     public static void removeGift(){
         for (int i = 0 ; i < gifts.size(); i++){
             if (!gifts.get(i).isActive()){
@@ -68,6 +77,6 @@ public class Data {
         }
     }
 
-    
+
 
 }

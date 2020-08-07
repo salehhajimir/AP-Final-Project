@@ -9,13 +9,13 @@ import java.util.Random;
 public class Gift {
 
     // gift coordinates and an int which indicates the type of a gift.
-    private int coordinateX , coordinateY , type;
+    private int coordinateX, coordinateY, type;
     // boolean which is used to check if a gift should be summoned or not.
     private boolean active;
     // path of the gift image files.
     private final String giftImage = ".\\images\\gift\\";
     // gift images.
-    private BufferedImage extraDamageGift , extraHealthGift;
+    private BufferedImage extraDamageGift, extraHealthGift;
     // amount of the gift sides.
     private final int GIFT_SIDE = 25;
     // String which shows the type of the gift.
@@ -25,8 +25,18 @@ public class Gift {
 
 
 
+
+
     /**
      * getter and setter methods.
+     * @param type
+     */
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    /**
+     *
      * @return
      */
     public String getGiftType() {
@@ -34,7 +44,6 @@ public class Gift {
     }
 
     /**
-     *
      * @return
      */
     public int getType() {
@@ -42,7 +51,6 @@ public class Gift {
     }
 
     /**
-     *
      * @return
      */
     public int getCoordinateX() {
@@ -50,7 +58,6 @@ public class Gift {
     }
 
     /**
-     *
      * @return
      */
     public int getCoordinateY() {
@@ -58,7 +65,6 @@ public class Gift {
     }
 
     /**
-     *
      * @return
      */
     public long getTime() {
@@ -66,7 +72,6 @@ public class Gift {
     }
 
     /**
-     *
      * @param active
      */
     public void setActive(boolean active) {
@@ -74,21 +79,20 @@ public class Gift {
     }
 
     /**
-     *
      * @return
      */
     public boolean isActive() {
         return active;
     }
 
-    public Gift(){
+    public Gift() {
         summonGift();
         time = System.currentTimeMillis();
 
 
         Random random = new Random();
         type = random.nextInt(2);
-        if(type == 0)
+        if (type == 0)
             giftType = "extra health";
         else if (type == 1)
             giftType = "extra damage";
@@ -98,8 +102,7 @@ public class Gift {
 
             extraDamageGift = ImageIO.read(new File(giftImage + "oilSpill_large.png"));
             extraHealthGift = ImageIO.read(new File(giftImage + "sandbagBrown.png"));
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -107,70 +110,76 @@ public class Gift {
 
     /**
      * rendering gift image in game frame.
+     *
      * @param graphics2D
      */
-    public void renderGift(Graphics2D graphics2D){
+    public void renderGift(Graphics2D graphics2D) {
         AffineTransform trans = AffineTransform.getTranslateInstance(coordinateX, coordinateY);
         BufferedImage image = null;
 
-        if (type == 0){
+        if (type == 0) {
             image = extraHealthGift;
-        }
-        else if (type == 1){
+        } else if (type == 1) {
             image = extraDamageGift;
         }
 
-        trans.scale(GIFT_SIDE  / 50 , GIFT_SIDE /50);
-        graphics2D.drawImage(image , trans , null);
+        trans.scale(GIFT_SIDE / 50, GIFT_SIDE / 50);
+        graphics2D.drawImage(image, trans, null);
     }
 
 
     /**
      * initializing gift's coordinates.
      */
-    public void summonGift(){
+    public void summonGift() {
         Random random = new Random();
         int tmpX;
         int tmpY;
 
         while (true) {
-            tmpX  = random.nextInt(GameFrame.GAME_WIDTH);
+            tmpX = random.nextInt(GameFrame.GAME_WIDTH);
             tmpY = random.nextInt(GameFrame.GAME_HEIGHT);
             boolean breaking = false;
             for (FloorBlock floorBlock : Data.floor) {
-                if ((floorBlock.checkOverlap(tmpX,tmpY))) {
+                if ((floorBlock.checkOverlap(tmpX, tmpY))) {
                     this.coordinateX = tmpX;
                     this.coordinateY = tmpY;
                     breaking = true;
                     break;
                 }
             }
-            if(breaking)
+            if (breaking)
                 break;
         }
     }
 
 
-    public boolean checkOverlap(Rectangle tank){
+    public boolean checkOverlap(Rectangle tank) {
         Rectangle gift = new Rectangle(coordinateX, coordinateY, GIFT_SIDE, GIFT_SIDE);
         return tank.intersects(gift);
     }
 
 
-
-    public void execute(){
-        for (Tank tank : Data.tanks){
+    public void executeGift() {
+        for (Tank tank : Data.tanks) {
             Rectangle rect1 = new Rectangle(tank.getDimensionX(), tank.getDimensionY(), Tank.TANK_WIDTH, Tank.TANK_LENGTH);
             if (checkOverlap(rect1)) {
-                if (type == 0){
-                    tank.setHealth((int)(1.1 * tank.getHealth()));
-                }
-
-                else if (type == 1){
-                    tank.getBullet().setDamage(2 * tank.getBullet().getDamage());
+                if (type == 0) {
+                    tank.setHealth((int) (1.1 * tank.getHealth()));
+                } else if (type == 1) {
+                    Random random = new Random();
+                    int rand = random.nextInt(2);
+                    switch (rand) {
+                        case 0:
+                            tank.getBullet().setDamage(2 * tank.getBullet().getDamage());
+                            break;
+                        case 1:
+                            tank.getBullet().setDamage(3 * tank.getBullet().getDamage());
+                            break;
+                    }
                 }
             }
         }
-    }
 
+    }
 }

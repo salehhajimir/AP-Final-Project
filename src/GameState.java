@@ -102,11 +102,7 @@ public class GameState {
             }
         }
 
-        /*// handling bullets' encounters with walls.
-        for (Wall wall : Data.walls){
-            if (wall.isDestructive())
-                wall.encounter();
-                }*/
+
 
         // handling bullets' encounters with tanks.
         for (Tank tank : Data.tanks){
@@ -114,14 +110,7 @@ public class GameState {
             tank.destruction();
         }
 
-        Thread thread = new Thread(){
-            @Override
-            public void run() {
-                if (!gift.isActive()){
-                    gift = new Gift();
-                }
-            }
-        };
+
 
         Data.removeBullet();
         Data.removeWall();
