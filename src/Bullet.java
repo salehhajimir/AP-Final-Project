@@ -23,8 +23,8 @@ public class Bullet {
     private Wall touchWall;
 
     // image's path.
-    private final String BULLET = ".\\images\\tank and bullet\\bulletBlue2_outline.png";
-    private final String BULLET1 = ".\\images\\tank and bullet\\cannonball.png";
+    private final String BULLET1 = ".\\images\\tank and bullet\\bulletBlue2_outline.png";
+    private final String BULLET = ".\\images\\tank and bullet\\cannonball.png";
     // image's file.
     private BufferedImage bulletImage;
 
@@ -218,46 +218,23 @@ public class Bullet {
         angle=getAngle();
 
         if(headX>touchWall.getLeft()+safeX && headX< touchWall.getRight()-safeX) {
-
-
             if (downDistance < topDistance) {
                 if(angle==270)
                     angle+=180;
                 else if(angle>270)
-                    angle += 90;
+                    angle += 90+(360-angle);
                 else
-                    angle-=90;
+                    angle -= 90 - (angle-180);
             } else {
                 if(angle == 90)
                     angle += 180;
-                else if(angle < 90)
-                    angle -= 90;
                 else
-                    angle+=90;
+                    angle = 360-angle;
             }
         }
         else if (headY>touchWall.getTop()+safey && headY< touchWall.getDown()-safey)
         {
-            if(leftDistance<rightDistance)
-            {
-                if(angle==0)
-                    angle += 180;
-                else if(angle<90)
-                    angle+=90;
-                else
-                    angle-=90;
-            }
-            else
-            {
-                if(angle==180)
-                    angle -= 180;
-                else if(angle<180)
-                    angle-=90;
-                else
-                    angle+=90;
-            }
-
-
+            angle=180-angle;
         }
         else {
             angle += 180;

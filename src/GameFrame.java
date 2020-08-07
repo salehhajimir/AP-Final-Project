@@ -116,6 +116,8 @@ public class GameFrame extends JFrame {
         for (Bullet bullet : Data.bullets){
             if (bullet.isAlive())
                 bullet.renderBullet(g2d);
+
+            for (Gift gift )
         }
 
 

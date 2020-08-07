@@ -116,8 +116,14 @@ public class GameState {
         }
 
         if (System.currentTimeMillis() % 100000000 <= 5000){
-
+            Data.gifts.get(0).setActive(true);
         }
+        else if (System.currentTimeMillis() % 100000000 > 5000){
+            Data.gifts.get(0).setActive(true);
+        }
+
+        Data.gifts.get(0).executeGift();
+        Data.gifts.get(1).executeGift();
 
 
 
