@@ -115,7 +115,7 @@ public class Gift {
             image = extraDamageGift;
         }
 
-        trans.scale(GIFT_SIDE / 4, GIFT_SIDE / 4);
+        trans.scale(GIFT_SIDE / 64, GIFT_SIDE / 64);
         graphics2D.drawImage(image, trans, null);
     }
 
@@ -146,16 +146,16 @@ public class Gift {
     }
 
 
-    public boolean checkOverlap(Rectangle tank) {
-        Rectangle gift = new Rectangle(coordinateX, coordinateY, GIFT_SIDE, GIFT_SIDE);
-        return tank.intersects(gift);
+    public boolean checkOverlap(int x , int y){
+        if (x > coordinateX - GIFT_SIDE/2 && x < coordinateX + GIFT_SIDE/2 && y > coordinateY - GIFT_SIDE/2 && y < coordinateY + GIFT_SIDE)
+            return true;
+        return false;
     }
 
 
     public void executeGift() {
         for (Tank tank : Data.tanks) {
-            Rectangle rect1 = new Rectangle(tank.getDimensionX(), tank.getDimensionY(), Tank.TANK_WIDTH, Tank.TANK_LENGTH);
-            if (checkOverlap(rect1)) {
+            if (checkOverlap(tank.getDimensionX() , tank.getDimensionY())) {
                 if (type == 0) {
                     tank.setHealth((int) (1.1 * tank.getHealth()));
                 } else if (type == 1) {
@@ -170,6 +170,8 @@ public class Gift {
                             break;
                     }
                 }
+                setActive(false);
+                break;
             }
         }
 

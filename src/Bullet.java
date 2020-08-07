@@ -206,31 +206,13 @@ public class Bullet {
     {
         double headX=getHeadX();
         double headY=getHeadY();
-
-        double topDistance=Math.abs(touchWall.getTop()-headY);
-        double downDistance=Math.abs(touchWall.getDown()-headY);
-        double leftDistance=Math.abs(touchWall.getLeft()-headX);
-        double rightDistance=Math.abs(touchWall.getRight()-headX);
-
-        int safeX=touchWall.getWidth()/50;
-        int safey=touchWall.getHeight()/50;
+        int safeX=touchWall.getWidth()/100;
+        int safey=touchWall.getHeight()/100;
 
         angle=getAngle();
 
         if(headX>touchWall.getLeft()+safeX && headX< touchWall.getRight()-safeX) {
-            if (downDistance < topDistance) {
-                if(angle==270)
-                    angle+=180;
-                else if(angle>270)
-                    angle += 90+(360-angle);
-                else
-                    angle -= 90 - (angle-180);
-            } else {
-                if(angle == 90)
-                    angle += 180;
-                else
-                    angle = 360-angle;
-            }
+            angle=360-angle;
         }
         else if (headY>touchWall.getTop()+safey && headY< touchWall.getDown()-safey)
         {
@@ -238,7 +220,6 @@ public class Bullet {
         }
         else {
             angle += 180;
-
         }
 
     }

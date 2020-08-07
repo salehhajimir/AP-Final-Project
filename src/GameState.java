@@ -3,6 +3,7 @@ import com.sun.xml.internal.bind.v2.TODO;
 import javax.sql.DataSource;
 import java.awt.*;
 import java.awt.event.*;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.Map;
 
@@ -110,21 +111,21 @@ public class GameState {
         Data.removeWall();
         Data.removeTank();
 
-        if (System.currentTimeMillis() % 100000000 == 0){
+
+        if (LocalTime.now().getSecond() == 0){
             Data.gifts.get(0).setActive(false);
             Data.gifts.get(1).setActive(false);
         }
 
-        if (System.currentTimeMillis() % 100000000 <= 5000){
+        if (LocalTime.now().getSecond() == 20){
             Data.gifts.get(0).setActive(true);
         }
-        else if (System.currentTimeMillis() % 100000000 > 5000){
-            Data.gifts.get(0).setActive(true);
+        else if (LocalTime.now().getSecond() == 40){
+            Data.gifts.get(1).setActive(true);
         }
 
         Data.gifts.get(0).executeGift();
         Data.gifts.get(1).executeGift();
-
 
 
         checkGameOver();

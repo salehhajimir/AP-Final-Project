@@ -110,6 +110,8 @@ public class GameFrame extends JFrame {
         for (Tank tank : Data.tanks){
             if (tank.isAlive())
                 tank.renderTank(g2d);
+            //else
+                //
         }
 
         //drawing bullets
@@ -117,7 +119,12 @@ public class GameFrame extends JFrame {
             if (bullet.isAlive())
                 bullet.renderBullet(g2d);
 
-            for (Gift gift )
+            // drawing gifts.
+            for (Gift gift : Data.gifts){
+                if (gift.isActive()){
+                    gift.renderGift(g2d);
+                }
+            }
         }
 
 

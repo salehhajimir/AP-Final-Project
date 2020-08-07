@@ -231,7 +231,7 @@ public class Tank {
      * tank's turning methods.
      */
     public void turnClockwise(){
-        angle -= 4;
+        angle -= 10;
         angle = angle % 360;
         if (angle < 0)
             angle += 360;
@@ -241,7 +241,7 @@ public class Tank {
      *
      */
     public void turnAntiClockwise(){
-        angle += 4;
+        angle += 10;
         angle = angle % 360;
 
     }
@@ -429,7 +429,7 @@ public class Tank {
         //Rectangle rect1 = new Rectangle(dimensionX,dimensionY , TANK_WIDTH,TANK_LENGTH );
         for (Bullet bullett : Data.bullets){
             //Rectangle rect2 = new Rectangle(bullett.getDimensionX(),bullett.getDimensionY() ,12 , 16);
-            if (checkOverlap(bullett.getDimensionX() , bullett.getDimensionY())){
+            if (checkOverlap(bullett.getDimensionX() , bullett.getDimensionY()) && this.isAlive()){
                 this.health -= bullett.getDamage();
                 if (health <= 0){
                     destruction();
@@ -450,6 +450,8 @@ public class Tank {
             return true;
         return false;
     }
+
+    public void renderDeath(Graphics2D graphics2D){}
 
 
 
