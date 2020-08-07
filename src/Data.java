@@ -18,6 +18,8 @@ public class Data {
     public static ArrayList<Player> players = new ArrayList<Player>();
     // arraylist for gifts.
     public static ArrayList<Gift> gifts = new ArrayList<Gift>();
+    // arraylist for dead tanks.
+    public static ArrayList<Tank> deadTanks = new ArrayList<Tank>();
 
 
     /**
@@ -64,6 +66,7 @@ public class Data {
     public static void removeTank(){
         for (int i = 0 ; i < tanks.size(); i++){
             if (!tanks.get(i).isAlive()){
+                deadTanks.add(tanks.get(i));
                 tanks.remove(i);
                 i--;
             }

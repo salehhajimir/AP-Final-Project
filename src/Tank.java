@@ -18,11 +18,11 @@ public class Tank {
     // vars fot tank's coordinates , angle , amount of health and indicating color of tank.
     private int dimensionX, dimensionY, angle, health , tankColor;
     // booleans for controlling shooting 2 bullets in a second and aliveness.
-    private boolean shot1 , shot2 , alive;
+    private boolean shot1 , shot2 , alive , healthGift , damageGift;
     // path of image's file.
     private final String TANK_IMAGE = ".\\images\\tank and bullet\\";
     // image file.
-    public BufferedImage tankImage;
+    private BufferedImage tankImage , deadTankImage;
     private String[] image = new String[8];
     // tank's width and length.
      static final int TANK_WIDTH = 42;
@@ -42,6 +42,8 @@ public class Tank {
         alive = true;
         shot1 = false;
         shot2 = false;
+        healthGift = false;
+        damageGift = false;
 
 
         image[0] = TANK_IMAGE + "tank_blue.png";
@@ -58,6 +60,7 @@ public class Tank {
         tankColor = random.nextInt(6);
         try{
             tankImage = ImageIO.read(new File(image[tankColor]));
+            deadTankImage = ImageIO.read(new File(TANK_IMAGE + "skull1.png"));
         }
         catch(IOException e){
             System.out.println(e);
@@ -73,6 +76,22 @@ public class Tank {
      */
     public void setHealth(int health) {
         this.health = health;
+    }
+
+    /**
+     *
+     * @param healthGift
+     */
+    public void setHealthGift(boolean healthGift) {
+        this.healthGift = healthGift;
+    }
+
+    /**
+     *
+     * @param damageGift
+     */
+    public void setDamageGift(boolean damageGift) {
+        this.damageGift = damageGift;
     }
 
     /**
@@ -117,8 +136,19 @@ public class Tank {
 
     /**
      *
-     * @param gift
+     * @return
      */
+    public boolean isDamageGift() {
+        return damageGift;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public boolean isHealthGift() {
+        return healthGift;
+    }
 
     /**
      *
@@ -451,8 +481,10 @@ public class Tank {
         return false;
     }
 
-    public void renderDeath(Graphics2D graphics2D){}
-
+    public void renderDeadTank(Graphics2D graphics2D){
+        AffineTransform trans = AffineTransform.getTranslateInstance(dimensionX, dimensionY);
+        graphics2D.drawImage(deadTankImage , trans , null);
+    }
 
 
 

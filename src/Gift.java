@@ -155,10 +155,14 @@ public class Gift {
 
     public void executeGift() {
         for (Tank tank : Data.tanks) {
-            if (checkOverlap(tank.getDimensionX() , tank.getDimensionY())) {
+            if (checkOverlap(tank.getDimensionX() , tank.getDimensionY()) && !tank.isDamageGift() && !tank.isDamageGift()) {
                 if (type == 0) {
-                    tank.setHealth((int) (1.1 * tank.getHealth()));
+                    tank.setHealthGift(true);
+                    if (tank.isHealthGift()) {
+                        tank.setHealth((int) (1.1 * tank.getHealth()));
+                    }
                 } else if (type == 1) {
+                    tank.setDamageGift(true);
                     Random random = new Random();
                     int rand = random.nextInt(2);
                     switch (rand) {
