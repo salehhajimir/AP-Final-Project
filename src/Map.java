@@ -20,14 +20,14 @@ public class Map {
 
     public Map() {
         map = fileReader();
-        sizeX = map[0].length;
-        sizeY = map.length;
+        sizeY = map[0].length;
+        sizeX = map.length;
 
         WIDTH_CONSTANT = GameFrame.GAME_WIDTH / sizeX;
         HEIGHT_CONSTANT = GameFrame.GAME_HEIGHT / sizeY;
 
-        walls = new Wall[sizeY][sizeX];
-        floor = new FloorBlock[sizeY][sizeX];
+        walls = new Wall[sizeX][sizeY];
+        floor = new FloorBlock[sizeX][sizeY];
 
 
 
@@ -74,6 +74,7 @@ public class Map {
         final File directory = new File(".\\maze\\");
         File[] filesInDirectory = directory.listFiles();
         Random random = new Random();
+        System.out.println(filesInDirectory);
         File selectedFile = filesInDirectory[random.nextInt(filesInDirectory.length)];
         String content = "";
         try (FileReader fileReader = new FileReader(selectedFile))
@@ -90,11 +91,11 @@ public class Map {
         String[] lines = content.split("\n");
         int sizeY = lines.length;
         int sizeX = lines[0].length()-1;
-        int[][] mapRead = new int[sizeY][sizeX];
+        int[][] mapRead = new int[sizeX][sizeY];
         for (int i=0; i<sizeY; i++)
             for (int j = 0; j < sizeX; j++) {
                 try {
-                    mapRead[i][j] = Integer.parseInt(String.valueOf(lines[i].charAt(j)));
+                    mapRead[j][i] = Integer.parseInt(String.valueOf(lines[i].charAt(j)));
 
                 }catch (Exception e)
                 {

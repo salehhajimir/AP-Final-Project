@@ -20,7 +20,6 @@ public class Gift {
     private final int GIFT_SIDE = 64;
     // String which shows the type of the gift.
     private String giftType;
-    // var which saves the exact time when gift was created.
 
 
 
@@ -120,6 +119,7 @@ public class Gift {
     }
 
 
+
     /**
      * initializing gift's coordinates.
      */
@@ -146,6 +146,12 @@ public class Gift {
     }
 
 
+    /**
+     * check overlaps with tanks.
+     * @param x
+     * @param y
+     * @return
+     */
     public boolean checkOverlap(int x , int y){
         if (x > coordinateX - GIFT_SIDE/2 && x < coordinateX + GIFT_SIDE/2 && y > coordinateY - GIFT_SIDE/2 && y < coordinateY + GIFT_SIDE/2)
             return true;
@@ -153,6 +159,9 @@ public class Gift {
     }
 
 
+    /**
+     * execute gift ability for tank.
+     */
     public void executeGift() {
         for (Tank tank : Data.tanks) {
             if (checkOverlap(tank.getDimensionX() , tank.getDimensionY()) && !tank.isGiftActive()) {

@@ -65,6 +65,24 @@ public class Wall {
      *
      * @return
      */
+    public int getWidth()
+    {
+        return  width;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public  int getHeight()
+    {
+        return  height;
+    }
+
+    /**
+     *
+     * @return
+     */
     public int getDimensionY() {
         return dimensionY;
     }
@@ -163,30 +181,42 @@ public class Wall {
         }
 
 
-
+    /**
+     * calculate coordinates of wall sides.
+     * @return
+     */
     public int getTop()
     {
         return dimensionY;
     }
+
+    /**
+     *
+     * @return
+     */
     public int getDown()
     {
         return dimensionY+height;
     }
+
+    /**
+     *
+     * @return
+     */
     public int getLeft()
     {
         return dimensionX;
     }
+
+    /**
+     *
+     * @return
+     */
     public int getRight()
     {
         return dimensionX+width;
     }
 
-    public int getWidth()
-    {
-        return  width;
-    }
-    public  int getHeight()
-    {
-        return  height;
-    }
+
+
 }

@@ -466,6 +466,10 @@ public class Tank {
         return false;
     }
 
+    /**
+     * render skull image if tank is dead.
+     * @param graphics2D
+     */
     public void renderDeadTank(Graphics2D graphics2D){
         AffineTransform trans = AffineTransform.getTranslateInstance(dimensionX, dimensionY);
         graphics2D.drawImage(deadTankImage , trans , null);

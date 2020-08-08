@@ -23,7 +23,6 @@ public class Bullet {
     private Wall touchWall;
 
     // image's path.
-    private final String BULLET1 = ".\\images\\tank and bullet\\bulletBlue2_outline.png";
     private final String BULLET = ".\\images\\tank and bullet\\cannonball.png";
     // image's file.
     private BufferedImage bulletImage;
@@ -184,7 +183,6 @@ public class Bullet {
      * checking if bullet touched a wall or not.
      * @return
      */
-
     public boolean isWallTouched() {
         for (Wall wall : Data.walls) {
             if (wall.checkOverlap(getHeadX(), getHeadY()))
@@ -199,9 +197,9 @@ public class Bullet {
     }
 
 
-
-
-
+    /**
+     * calculate angle when bullet touched a wall.
+     */
     public void getRefledtAngleCalculate()
     {
         double headX=getHeadX();
@@ -221,11 +219,13 @@ public class Bullet {
         else {
             angle += 180;
         }
-
     }
 
 
-
+    /**
+     * calculate bullet's head's coordinates.
+     * @return
+     */
     public double getHeadX()
     {
         double cos=Math.cos(Math.toRadians(angle))* SIDE;
@@ -234,6 +234,10 @@ public class Bullet {
 
     }
 
+    /**
+     * calculate bullet's head's coordinates.
+     * @return
+     */
     public double getHeadY()
     {
         double sin=Math.sin(Math.toRadians(angle))*SIDE;

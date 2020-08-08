@@ -73,7 +73,9 @@ public class Data {
         }
     }
 
-    // removing gift if it's not alive.
+    /**
+     *  removing gift if it's not active.
+     */
     public static void removeGift(){
         for (int i = 0 ; i < gifts.size(); i++){
             if (!gifts.get(i).isActive()){
