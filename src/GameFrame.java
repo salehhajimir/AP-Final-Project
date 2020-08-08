@@ -188,17 +188,24 @@ public class GameFrame extends JFrame {
         }
 
         // display players' information in score panel.
-        String information = "";
+
 
         int height = 100;
         for (Player player : Data.players){
-            information += player.getUserName() + " --> health : " + player.getPlayerTank().getHealth();
+           String information1 = player.getUserName();
+           String information2 = "health : " + player.getPlayerTank().getHealth() + " | damage : "+ player.getPlayerTank().getBullet().getDamage();
+           String information3 = "score : " + player.getPlayerScore();
 
 
             g2d.setColor(Color.BLACK);
             g2d.setFont(g2d.getFont().deriveFont(Font.BOLD).deriveFont(16.0f));
-            int strWidthh = g2d.getFontMetrics().stringWidth(information);
-            g2d.drawString(information, (GAME_WIDTH), height);
+            int strWidthh1 = g2d.getFontMetrics().stringWidth(information1);
+            int strWidthh2 = g2d.getFontMetrics().stringWidth(information2);
+            int strWidthh3 = g2d.getFontMetrics().stringWidth(information3);
+            g2d.drawString(information1, (GAME_WIDTH + 20), height);
+            g2d.drawString(information2, (GAME_WIDTH + 20), height + 15);
+            g2d.drawString(information3, (GAME_WIDTH + 20), height + 30);
+            height += 60;
         }
     }
 }
