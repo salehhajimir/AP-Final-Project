@@ -18,7 +18,7 @@ public class Wall {
     private final int MARGIN = 5;
 
     // image's path.
-    public static final String WALL = "C:\\Users\\Asus\\Desktop\\AP final project\\images\\wall\\";
+    public static final String WALL = ".\\images\\wall\\";
 
 
     /**

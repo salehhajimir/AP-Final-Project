@@ -127,6 +127,8 @@ public class GameState {
         Data.gifts.get(0).executeGift();
         Data.gifts.get(1).executeGift();
 
+       System.out.println("player: "+player.getPlayerTank().getHealth() + " | damage :"+ player.getPlayerTank().getBullet().getDamage());
+        System.out.println("computer"+computer.getPlayerTank().getHealth() + " | damage :"+ computer.getPlayerTank().getBullet().getDamage());
 
         checkGameOver();
     }

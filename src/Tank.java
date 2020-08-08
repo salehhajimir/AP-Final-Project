@@ -17,8 +17,8 @@ public class Tank {
 
     // vars fot tank's coordinates , angle , amount of health and indicating color of tank.
     private int dimensionX, dimensionY, angle, health , tankColor;
-    // booleans for controlling shooting 2 bullets in a second and aliveness.
-    private boolean shot1 , shot2 , alive , healthGift , damageGift;
+    // booleans for controlling shooting 2 bullets in a second ,aliveness and activeness of gift.
+    private boolean shot1 , shot2 , alive , giftActive;
     // path of image's file.
     private final String TANK_IMAGE = ".\\images\\tank and bullet\\";
     // image file.
@@ -42,8 +42,7 @@ public class Tank {
         alive = true;
         shot1 = false;
         shot2 = false;
-        healthGift = false;
-        damageGift = false;
+      giftActive = false;
 
 
         image[0] = TANK_IMAGE + "tank_blue.png";
@@ -76,22 +75,6 @@ public class Tank {
      */
     public void setHealth(int health) {
         this.health = health;
-    }
-
-    /**
-     *
-     * @param healthGift
-     */
-    public void setHealthGift(boolean healthGift) {
-        this.healthGift = healthGift;
-    }
-
-    /**
-     *
-     * @param damageGift
-     */
-    public void setDamageGift(boolean damageGift) {
-        this.damageGift = damageGift;
     }
 
     /**
@@ -136,18 +119,18 @@ public class Tank {
 
     /**
      *
-     * @return
+     * @param giftActive
      */
-    public boolean isDamageGift() {
-        return damageGift;
+    public void setGiftActive(boolean giftActive) {
+        this.giftActive = giftActive;
     }
 
     /**
      *
      * @return
      */
-    public boolean isHealthGift() {
-        return healthGift;
+    public boolean isGiftActive() {
+        return giftActive;
     }
 
     /**
@@ -176,6 +159,8 @@ public class Tank {
      * @return
      */
     public int getHealth() {
+        if(health<0)
+            return  0;
         return health;
     }
 

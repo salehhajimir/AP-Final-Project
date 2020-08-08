@@ -129,13 +129,13 @@ public class Gift {
         int tmpY;
 
         while (true) {
-            tmpX = random.nextInt(GameFrame.GAME_WIDTH);
-            tmpY = random.nextInt(GameFrame.GAME_HEIGHT);
+            tmpX = random.nextInt(GameFrame.GAME_WIDTH) - 35;
+            tmpY = random.nextInt(GameFrame.GAME_HEIGHT) - 35;
             boolean breaking = false;
             for (FloorBlock floorBlock : Data.floor) {
-                if ((floorBlock.checkOverlap(tmpX, tmpY))) {
-                    this.coordinateX = tmpX;
-                    this.coordinateY = tmpY;
+                if ((floorBlock.checkOverlap(tmpX , tmpY))) {
+                    this.coordinateX = tmpX ;
+                    this.coordinateY = tmpY ;
                     breaking = true;
                     break;
                 }
@@ -147,7 +147,7 @@ public class Gift {
 
 
     public boolean checkOverlap(int x , int y){
-        if (x > coordinateX - GIFT_SIDE/2 && x < coordinateX + GIFT_SIDE/2 && y > coordinateY - GIFT_SIDE/2 && y < coordinateY + GIFT_SIDE)
+        if (x > coordinateX - GIFT_SIDE/2 && x < coordinateX + GIFT_SIDE/2 && y > coordinateY - GIFT_SIDE/2 && y < coordinateY + GIFT_SIDE/2)
             return true;
         return false;
     }
@@ -155,26 +155,27 @@ public class Gift {
 
     public void executeGift() {
         for (Tank tank : Data.tanks) {
-            if (checkOverlap(tank.getDimensionX() , tank.getDimensionY()) && !tank.isDamageGift() && !tank.isDamageGift()) {
-                if (type == 0) {
-                    tank.setHealthGift(true);
-                    if (tank.isHealthGift()) {
+            if (checkOverlap(tank.getDimensionX() , tank.getDimensionY()) && !tank.isGiftActive()) {
+                if (type == 0 && !tank.isGiftActive()) {
+                    if (this.isActive()) {
                         tank.setHealth((int) (1.1 * tank.getHealth()));
                     }
-                } else if (type == 1) {
-                    tank.setDamageGift(true);
-                    Random random = new Random();
-                    int rand = random.nextInt(2);
-                    switch (rand) {
-                        case 0:
-                            tank.getBullet().setDamage(2 * tank.getBullet().getDamage());
-                            break;
-                        case 1:
-                            tank.getBullet().setDamage(3 * tank.getBullet().getDamage());
-                            break;
+                } else if (type == 1 && !tank.isGiftActive()) {
+                    if (this.isActive()) {
+                        Random random = new Random();
+                        int rand = random.nextInt(2);
+                        switch (rand) {
+                            case 0:
+                                tank.getBullet().setDamage(2 * tank.getBullet().getDamage());
+                                break;
+                            case 1:
+                                tank.getBullet().setDamage(3 * tank.getBullet().getDamage());
+                                break;
+                        }
                     }
                 }
                 setActive(false);
+                tank.setGiftActive(true);
                 break;
             }
         }

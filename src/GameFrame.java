@@ -190,16 +190,15 @@ public class GameFrame extends JFrame {
         // display players' information in score panel.
         String information = "";
 
-        int height = 0;
+        int height = 100;
         for (Player player : Data.players){
-            information += player.getUserName() + " --> tank's health : " + player.getPlayerTank().getHealth() + " | player's score : " + player.getPlayerScore();
+            information += player.getUserName() + " --> health : " + player.getPlayerTank().getHealth();
 
 
             g2d.setColor(Color.BLACK);
             g2d.setFont(g2d.getFont().deriveFont(Font.BOLD).deriveFont(16.0f));
             int strWidthh = g2d.getFontMetrics().stringWidth(information);
-            g2d.drawString(information, (ScorePanel_WIDTH + 10 - strWidthh), height);
-            height += 20;
+            g2d.drawString(information, (GAME_WIDTH), height);
         }
     }
 }

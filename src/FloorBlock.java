@@ -50,7 +50,7 @@ public class FloorBlock {
      * @return
      */
     public boolean checkOverlap(int x , int y){
-        if (x > dimensionX + 10 && x < dimensionX+ width - 10 && y > dimensionY + 10 && y < dimensionY + height - 10)
+        if (x > dimensionX + 20 && x < dimensionX+ width - 20 && y > dimensionY + 20 && y < dimensionY + height - 20)
             return true;
         return false;
     }
